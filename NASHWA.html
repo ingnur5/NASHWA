@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NASHWA Tech Academy</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--gold:#FFD700;--gold2:#FFA500;--gold3:#FF8C00;--cyan:#00FFFF;--purple:#CC00FF;--red:#FF003C;--green:#25D366;--dark:#020510;--dark2:#060A1A;--dark3:#0A0F22;--border:rgba(255,215,0,0.12);--F1:'Bebas Neue',cursive;--F2:'Rajdhani',sans-serif;--F3:'Share Tech Mono',monospace}
+html{scroll-behavior:smooth}
+body{background:var(--dark);color:#E8EEFF;font-family:var(--F2);overflow-x:hidden}
+#cur-ring{position:fixed;width:36px;height:36px;border:2px solid var(--gold);border-radius:50%;pointer-events:none;z-index:99999;left:-100px;top:-100px;transform:translate(-50%,-50%);transition:width .18s,height .18s,border-color .18s,background .18s;opacity:0}
+#cur-dot{position:fixed;width:6px;height:6px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:99999;left:-100px;top:-100px;transform:translate(-50%,-50%);opacity:0}
+.cur-trail{position:fixed;pointer-events:none;z-index:99998;border-radius:50%;background:var(--gold);mix-blend-mode:screen}
+#scroll-bar{position:fixed;top:0;left:0;height:3px;width:0%;background:linear-gradient(90deg,var(--gold),var(--gold2),var(--purple));z-index:9999}
+#bgc{position:fixed;inset:0;z-index:0;pointer-events:none}
+.rain{position:fixed;font-family:var(--F3);color:rgba(255,215,0,.09);pointer-events:none;z-index:1;animation:rainF linear infinite;will-change:transform}
+@keyframes rainF{from{transform:translateY(-60px);opacity:0}5%{opacity:1}90%{opacity:.5}to{transform:translateY(110vh);opacity:0}}
+.glitch-active{animation:glitchText .15s steps(2) infinite}
+@keyframes glitchText{0%{text-shadow:2px 0 var(--cyan),-2px 0 var(--red)}50%{text-shadow:-2px 2px var(--cyan),2px -2px var(--red)}100%{text-shadow:2px 0 var(--cyan),-2px 0 var(--red)}}
+.scroll-particle{position:fixed;pointer-events:none;z-index:3;font-size:.7rem;font-family:var(--F3);animation:floatUp 2s ease-out forwards}
+@keyframes floatUp{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-120px) scale(0.3)}}
+.click-ripple{position:fixed;pointer-events:none;z-index:99997;border-radius:50%;border:1px solid rgba(255,215,0,.3);transform:translate(-50%,-50%);animation:rippleOut .6s ease-out forwards}
+@keyframes rippleOut{from{width:0;height:0;opacity:.6}to{width:120px;height:120px;opacity:0}}
+#hdr-top{position:fixed;top:0;left:0;right:0;z-index:1000;height:32px;background:linear-gradient(90deg,var(--gold3),var(--gold),var(--gold2),var(--gold),var(--gold3));background-size:300%;animation:gShift 4s linear infinite;overflow:hidden;display:flex;align-items:center}
+@keyframes gShift{0%{background-position:0%}100%{background-position:300%}}
+.ticker-wrap{display:flex;gap:3rem;animation:ticker 22s linear infinite;white-space:nowrap}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.tick{font-family:var(--F3);font-size:.62rem;font-weight:700;color:#000;letter-spacing:.1em;text-transform:uppercase;padding:0 .5rem}
+#hdr-main{position:fixed;top:32px;left:0;right:0;z-index:999;display:flex;align-items:center;justify-content:space-between;padding:.9rem 3rem;background:rgba(2,5,16,.93);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);transition:transform .4s}
+#hdr-main.hide{transform:translateY(-120%)}
+.hm-logo{font-family:var(--F1);font-size:1.85rem;letter-spacing:.25em;color:var(--gold);text-shadow:0 0 28px rgba(255,215,0,.5);line-height:1;cursor:pointer}
+.hm-sub{font-family:var(--F3);font-size:.48rem;letter-spacing:.3em;color:rgba(255,215,0,.38);text-transform:uppercase;margin-top:2px}
+.hm-nav{display:flex;gap:1.8rem;list-style:none;align-items:center}
+.hm-nav a{font-family:var(--F3);font-size:.6rem;letter-spacing:.12em;color:rgba(232,238,255,.45);text-decoration:none;text-transform:uppercase;transition:color .25s;position:relative}
+.hm-nav a::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:1px;background:var(--gold);transform:scaleX(0);transition:transform .25s}
+.hm-nav a:hover{color:var(--gold)}
+.hm-nav a:hover::after{transform:scaleX(1)}
+.hm-cta{padding:.45rem 1.2rem;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000!important;font-family:var(--F3);font-size:.6rem;font-weight:700;border-radius:2px;text-transform:uppercase;letter-spacing:.1em;transition:transform .2s,box-shadow .2s;text-decoration:none}
+.hm-cta:hover{transform:translateY(-2px)!important;box-shadow:0 8px 24px rgba(255,215,0,.3)!important}
+.hm-cta::after{display:none!important}
+.live-badge{display:flex;align-items:center;gap:.4rem;font-family:var(--F3);font-size:.58rem;color:rgba(37,211,102,.8);border:1px solid rgba(37,211,102,.25);padding:.28rem .7rem;border-radius:50px;letter-spacing:.1em}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 1.5s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.nav-toggle{display:none;background:none;border:none;color:var(--gold);font-size:1.5rem;cursor:pointer}
+@media(max-width:900px){.hm-nav{display:none;position:fixed;inset:0;background:rgba(2,5,16,.98);flex-direction:column;align-items:center;justify-content:center;gap:2rem;z-index:1000}.hm-nav.open{display:flex}.hm-nav a{font-size:1rem}.nav-toggle{display:block}#hdr-main{padding:.9rem 1.5rem}}
+#hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8rem 2rem 4rem;z-index:2;overflow:hidden}
+.orbit{position:absolute;border-radius:50%;border:1px solid rgba(255,215,0,.05);pointer-events:none;top:50%;left:50%;animation:orb linear infinite}
+@keyframes orb{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+.h-pre{font-family:var(--F3);font-size:.66rem;letter-spacing:.4em;color:rgba(255,215,0,.58);text-transform:uppercase;margin-bottom:1.4rem;animation:slideUp .8s .3s ease both}
+.nw{position:relative;display:inline-block;animation:slideUp 1s .1s cubic-bezier(.16,1,.3,1) both}
+.nt{font-family:var(--F1);font-size:clamp(6rem,20vw,17rem);line-height:.9;letter-spacing:.06em;color:var(--gold);text-shadow:0 0 50px rgba(255,215,0,.45),0 0 100px rgba(255,165,0,.2);display:block;position:relative;z-index:2}
+.nt .ch{display:inline-block;transition:transform .3s,color .3s}
+.nt .ch:hover{transform:translateY(-20px) scale(1.15);color:#fff;text-shadow:0 0 60px var(--gold),0 20px 40px rgba(255,215,0,.3)}
+.nline{position:absolute;left:-5%;right:-5%;top:49%;transform:translateY(-50%);height:4px;background:linear-gradient(90deg,transparent,rgba(255,140,0,.6) 8%,var(--gold) 25%,#FFF8DC 45%,#fff 50%,#FFF8DC 55%,var(--gold) 75%,rgba(255,140,0,.6) 92%,transparent);box-shadow:0 0 12px rgba(255,215,0,.9),0 0 28px rgba(255,215,0,.5);z-index:3;animation:lineGl 2.5s ease-in-out infinite}
+@keyframes lineGl{0%,100%{opacity:.8}50%{opacity:1;box-shadow:0 0 20px rgba(255,215,0,1),0 0 50px rgba(255,215,0,.8),0 0 90px rgba(255,165,0,.4)}}
+.h-sub{font-family:var(--F3);font-size:clamp(.58rem,1.4vw,.8rem);letter-spacing:.32em;color:rgba(232,238,255,.3);text-transform:uppercase;margin:.8rem 0 2rem;animation:slideUp .8s .6s ease both}
+.h-desc{max-width:560px;font-size:1.05rem;color:rgba(232,238,255,.6);line-height:1.85;margin-bottom:2.5rem;animation:slideUp .8s .8s ease both}
+.h-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;animation:slideUp .8s 1s ease both;margin-bottom:3.5rem}
+.btn-g{padding:.9rem 2.5rem;background:linear-gradient(135deg,var(--gold),var(--gold2),var(--gold3));border:none;border-radius:2px;color:#000;font-family:var(--F3);font-size:.76rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden}
+.btn-g::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;background:rgba(255,255,255,.3);border-radius:50%;transform:translate(-50%,-50%);transition:width .6s,height .6s}
+.btn-g:hover::before{width:400px;height:400px}
+.btn-g:hover{transform:translateY(-4px);box-shadow:0 15px 40px rgba(255,215,0,.32)}
+.btn-o{padding:.9rem 2.5rem;background:transparent;border:1px solid rgba(255,215,0,.28);border-radius:2px;color:rgba(255,215,0,.8);font-family:var(--F3);font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .25s}
+.btn-o:hover{border-color:var(--gold);background:rgba(255,215,0,.06);color:var(--gold)}
+.h-stats{display:flex;gap:3rem;justify-content:center;flex-wrap:wrap;animation:slideUp .8s 1.2s ease both}
+.h-stat-n{font-family:var(--F1);font-size:2.2rem;color:var(--gold);text-shadow:0 0 18px rgba(255,215,0,.4);line-height:1}
+.h-stat-l{font-family:var(--F3);font-size:.53rem;letter-spacing:.2em;color:rgba(232,238,255,.3);text-transform:uppercase;margin-top:.3rem}
+.scroll-ind{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;animation:slideUp .8s 1.5s ease both}
+.scroll-line{width:1px;height:52px;background:linear-gradient(to bottom,var(--gold),transparent);animation:sline 2s ease-in-out infinite}
+@keyframes sline{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+.scroll-txt{font-family:var(--F3);font-size:.5rem;letter-spacing:.35em;color:rgba(255,215,0,.3);writing-mode:vertical-rl}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+#sound-viz{position:fixed;bottom:0;left:0;right:0;height:50px;z-index:1;pointer-events:none;opacity:.12}
+.sband{position:relative;z-index:2;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,215,0,.08);border-top:1px solid rgba(255,215,0,.12);border-bottom:1px solid rgba(255,215,0,.08)}
+.sc{padding:1.8rem 1.5rem;text-align:center;background:var(--dark);transition:background .35s}
+.sc:hover{background:rgba(255,215,0,.03)}
+.sc-n{font-family:var(--F1);font-size:3rem;color:var(--gold);line-height:1;text-shadow:0 0 18px rgba(255,215,0,.32)}
+.sc-l{font-family:var(--F3);font-size:.52rem;letter-spacing:.18em;color:rgba(232,238,255,.28);text-transform:uppercase;margin-top:.4rem}
+@media(max-width:700px){.sband{grid-template-columns:repeat(2,1fr)}}
+.sec{position:relative;z-index:2;padding:7rem 3rem}
+.sec-alt{background:var(--dark2)}
+.sec-alt2{background:var(--dark3)}
+@media(max-width:700px){.sec{padding:5rem 1.5rem}}
+.eyebrow{font-family:var(--F3);font-size:.6rem;letter-spacing:.38em;color:var(--gold);text-transform:uppercase;display:flex;align-items:center;gap:.8rem;margin-bottom:1rem}
+.eyebrow::before{content:'';width:28px;height:1px;background:var(--gold)}
+.sec-title{font-family:var(--F1);font-size:clamp(2.2rem,5vw,4.5rem);line-height:.95;letter-spacing:.03em;color:#fff;margin-bottom:1.1rem}
+.sec-desc{font-size:1rem;color:rgba(232,238,255,.5);line-height:1.85;max-width:520px}
+.rev{transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1)}
+.rev-h{opacity:0;transform:translateY(38px)}
+.rev-h.vis{opacity:1;transform:none}
+.py-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1.2rem;margin-top:3.5rem}
+.py-card{background:var(--dark);border:1px solid rgba(255,215,0,.1);padding:1.8rem 1.4rem;border-radius:3px;position:relative;overflow:hidden;transition:transform .3s,border-color .3s;cursor:default}
+.py-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold2));transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.py-card:hover{transform:translateY(-6px);border-color:rgba(255,215,0,.28)}
+.py-card:hover::after{transform:scaleX(1)}
+.card-glow{position:absolute;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(255,215,0,.12),transparent 70%);pointer-events:none;opacity:0;transition:opacity .3s;transform:translate(-50%,-50%)}
+.py-card:hover .card-glow{opacity:1}
+.py-ico{font-size:2rem;display:block;margin-bottom:.8rem}
+.py-val{font-family:var(--F1);font-size:2.8rem;color:var(--gold);line-height:1;text-shadow:0 0 18px rgba(255,215,0,.28)}
+.py-tit{font-family:var(--F2);font-size:.95rem;font-weight:700;color:#fff;margin:.4rem 0 .45rem}
+.py-des{font-size:.8rem;color:rgba(232,238,255,.44);line-height:1.6}
+.bar-tit{font-family:var(--F1);font-size:1.8rem;letter-spacing:.05em;color:#fff;margin:4rem 0 2rem}
+.bar-row{display:flex;align-items:center;gap:1rem;margin-bottom:.9rem}
+.bar-lang{font-family:var(--F3);font-size:.62rem;letter-spacing:.08em;color:rgba(232,238,255,.48);width:118px;text-align:right;flex-shrink:0;text-transform:uppercase}
+.bar-track{flex:1;height:8px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;width:0%;transition:width 1.6s cubic-bezier(.16,1,.3,1)}
+.bar-pct{font-family:var(--F3);font-size:.6rem;color:rgba(232,238,255,.38);width:36px;text-align:right;flex-shrink:0}
+.quiz-box{max-width:760px;margin:3.5rem auto 0;background:var(--dark);border:1px solid rgba(255,215,0,.14);border-radius:4px;overflow:hidden}
+.quiz-hdr{padding:1.4rem 2rem;background:linear-gradient(135deg,rgba(255,215,0,.08),rgba(255,165,0,.04));border-bottom:1px solid rgba(255,215,0,.1);display:flex;align-items:center;justify-content:space-between}
+.quiz-tit{font-family:var(--F1);font-size:1.55rem;letter-spacing:.1em;color:var(--gold)}
+.quiz-sc{font-family:var(--F3);font-size:.7rem;color:rgba(255,215,0,.55);letter-spacing:.1em}
+.qpw{height:3px;background:rgba(255,255,255,.05)}.qpf{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width .5s;width:0%}
+.qbody{padding:2.4rem}
+.qcat{font-family:var(--F3);font-size:.58rem;letter-spacing:.24em;color:rgba(255,215,0,.48);text-transform:uppercase;margin-bottom:.75rem}
+.qtxt{font-family:var(--F2);font-size:1.12rem;font-weight:700;color:#fff;line-height:1.55;margin-bottom:.45rem}
+.qhint{font-family:var(--F3);font-size:.68rem;color:rgba(232,238,255,.32);margin-bottom:1.8rem;line-height:1.6}
+.qopts{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+@media(max-width:560px){.qopts{grid-template-columns:1fr}}
+.qopt{padding:.95rem 1.2rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:3px;font-family:var(--F3);font-size:.72rem;color:rgba(232,238,255,.68);cursor:pointer;text-align:left;transition:all .2s;letter-spacing:.04em;line-height:1.4}
+.qopt:hover{border-color:var(--gold);color:var(--gold);background:rgba(255,215,0,.05)}
+.qopt.ok{border-color:var(--cyan)!important;background:rgba(0,255,255,.07)!important;color:var(--cyan)!important}
+.qopt.no{border-color:var(--red)!important;background:rgba(255,0,60,.06)!important;color:#FF6080!important;animation:shake .4s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+.qfb{margin-top:1.4rem;padding:.95rem 1.1rem;border-radius:3px;font-family:var(--F3);font-size:.7rem;line-height:1.7;display:none}
+.qfb.show{display:block;animation:slideUp .3s ease}
+.qfb.yes{background:rgba(0,255,255,.06);border:1px solid rgba(0,255,255,.15);color:var(--cyan)}
+.qfb.bad{background:rgba(255,0,60,.06);border:1px solid rgba(255,0,60,.15);color:#FF6080}
+.qnxt{margin-top:1.4rem;padding:.75rem 2rem;background:linear-gradient(135deg,var(--gold),var(--gold2));border:none;border-radius:2px;color:#000;font-family:var(--F3);font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;display:none;transition:transform .18s}
+.qnxt:hover{transform:scale(1.03)}
+.qres{text-align:center;padding:3rem}
+.qr-trophy{font-size:4rem;display:block;margin-bottom:1rem}
+.qr-score{font-family:var(--F1);font-size:4.5rem;color:var(--gold);text-shadow:0 0 28px rgba(255,215,0,.4);line-height:1}
+.qr-msg{font-size:1rem;color:rgba(232,238,255,.58);margin:1rem auto 2rem;line-height:1.7;max-width:420px}
+.qr-btn{padding:.78rem 2rem;border:none;border-radius:2px;font-family:var(--F3);font-size:.7rem;font-weight:700;cursor:pointer;letter-spacing:.12em;text-transform:uppercase;margin:.3rem;transition:transform .18s}
+.qr-btn:hover{transform:scale(1.03)}
+.qr-btn.gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000}
+.qr-btn.out{background:transparent;border:1px solid var(--gold);color:var(--gold)}
+.streak-bar{display:flex;align-items:center;gap:.4rem;margin-top:1rem;flex-wrap:wrap}
+.streak-dot{width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,215,0,.15);font-size:.45rem;display:flex;align-items:center;justify-content:center;transition:all .3s}
+.streak-dot.hit{border-color:var(--cyan);background:rgba(0,255,255,.15);color:var(--cyan)}
+.streak-dot.miss{border-color:var(--red);background:rgba(255,0,60,.1);color:#FF6080}
+.streak-lbl{font-family:var(--F3);font-size:.45rem;color:rgba(255,215,0,.3);letter-spacing:.08em;margin-right:.3rem}
+.lab-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:3.5rem}
+@media(max-width:800px){.lab-grid{grid-template-columns:1fr}}
+.editor{background:#06080F;border:1px solid rgba(255,215,0,.12);border-radius:4px;overflow:hidden;display:flex;flex-direction:column}
+.e-bar{display:flex;align-items:center;gap:.45rem;padding:.65rem .95rem;background:#0C0E1A;border-bottom:1px solid rgba(255,255,255,.05);flex-shrink:0}
+.e-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.e-name{font-family:var(--F3);font-size:.58rem;color:rgba(232,238,255,.28);letter-spacing:.1em;margin-left:.3rem}
+.code-wrap{display:flex;flex:1;min-height:260px}
+.line-nums{padding:1.4rem .5rem 1.4rem .8rem;font-family:var(--F3);font-size:.78rem;line-height:1.9;color:rgba(255,215,0,.15);text-align:right;user-select:none;border-right:1px solid rgba(255,215,0,.06);background:#050710;min-width:38px;overflow:hidden}
+#eCode{flex:1;padding:1.4rem;font-family:var(--F3);font-size:.78rem;line-height:1.9;color:#00FF88;background:#06080F;border:none;outline:none;resize:none;tab-size:4;-moz-tab-size:4;width:100%;caret-color:#FFD700}
+#eCode::selection{background:rgba(255,215,0,.25)}
+.run-btn{width:100%;padding:.8rem;background:linear-gradient(135deg,var(--gold),var(--gold2));border:none;font-family:var(--F3);font-size:.7rem;font-weight:700;letter-spacing:.14em;color:#000;cursor:pointer;text-transform:uppercase;transition:opacity .2s;flex-shrink:0}
+.run-btn:hover{opacity:.86}
+.ex-tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.85rem}
+.ex-tab{font-family:var(--F3);font-size:.56rem;padding:.28rem .72rem;border:1px solid rgba(255,215,0,.14);background:transparent;color:rgba(255,215,0,.48);cursor:pointer;border-radius:1px;text-transform:uppercase;letter-spacing:.08em;transition:all .2s}
+.ex-tab:hover,.ex-tab.act{border-color:var(--gold);color:var(--gold);background:rgba(255,215,0,.05)}
+.output{background:#030407;border:1px solid rgba(0,255,255,.1);border-radius:4px;padding:1.5rem;font-family:var(--F3);font-size:.78rem;color:var(--cyan);line-height:1.9;min-height:300px;display:flex;flex-direction:column;position:relative}
+.out-lbl{font-size:.53rem;letter-spacing:.28em;color:rgba(0,255,255,.3);margin-bottom:.7rem;text-transform:uppercase;flex-shrink:0}
+.out-line{display:block;color:var(--cyan);animation:typeIn .3s ease}
+@keyframes typeIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
+.out-err{color:#FF6080}
+.out-ph{color:rgba(232,238,255,.2);font-size:.72rem}
+.exec-time{position:absolute;top:.8rem;right:1rem;font-family:var(--F3);font-size:.52rem;color:rgba(0,255,255,.35)}
+.input-note{margin-top:.6rem;padding:.6rem .8rem;background:rgba(255,215,0,.05);border:1px solid rgba(255,215,0,.12);border-radius:2px;font-family:var(--F3);font-size:.6rem;color:rgba(255,215,0,.6);line-height:1.5}
+.met-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;margin-top:4rem;background:rgba(255,215,0,.06)}
+@media(max-width:900px){.met-grid{grid-template-columns:repeat(2,1fr)}}
+.met-card{background:var(--dark);padding:2.2rem 1.3rem;position:relative;overflow:hidden;transition:transform .3s;cursor:default}
+.met-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold2));transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.met-card:hover{transform:translateY(-7px)}.met-card:hover::after{transform:scaleX(1)}
+.met-n{font-family:var(--F1);font-size:4.5rem;color:rgba(255,215,0,.05);line-height:1}
+.met-i{font-size:1.8rem;display:block;margin:.4rem 0}
+.met-t{font-family:var(--F2);font-size:.93rem;font-weight:700;color:#fff;margin-bottom:.45rem}
+.met-d{font-size:.78rem;color:rgba(232,238,255,.43);line-height:1.6}
+.filt{display:flex;gap:.45rem;flex-wrap:wrap;margin:2.4rem 0}
+.fb{font-family:var(--F3);font-size:.6rem;padding:.42rem 1.08rem;border:1px solid rgba(232,238,255,.1);background:transparent;color:rgba(232,238,255,.33);cursor:pointer;letter-spacing:.1em;text-transform:uppercase;border-radius:1px;transition:all .22s}
+.fb:hover,.fb.on{border-color:var(--gold);color:var(--gold);background:rgba(255,215,0,.05)}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.4rem}
+.ccard{background:var(--dark);border:1px solid rgba(255,255,255,.06);padding:1.7rem;border-radius:2px;position:relative;overflow:hidden;transition:transform .3s,box-shadow .3s,opacity .5s;cursor:default}
+.ccard::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--ca,var(--gold));transform:scaleX(0);transform-origin:left;transition:transform .45s}
+.ccard:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,.5)}.ccard:hover::before{transform:scaleX(1)}
+.cbadge{display:inline-flex;font-family:var(--F3);font-size:.56rem;letter-spacing:.12em;padding:.22rem .68rem;border-radius:1px;margin-bottom:.9rem;text-transform:uppercase}
+.bpy{background:rgba(0,255,255,.05);color:var(--cyan);border:1px solid rgba(0,255,255,.17)}
+.bja{background:rgba(255,100,30,.05);color:#FF641E;border:1px solid rgba(255,100,30,.17)}
+.bjs{background:rgba(255,215,0,.05);color:var(--gold);border:1px solid rgba(255,215,0,.17)}
+.bsq{background:rgba(204,0,255,.05);color:var(--purple);border:1px solid rgba(204,0,255,.17)}
+.ctit{font-family:var(--F1);font-size:1.5rem;letter-spacing:.04em;color:#fff;margin-bottom:.22rem}
+.clvl{font-family:var(--F3);font-size:.52rem;letter-spacing:.17em;color:rgba(232,238,255,.24);margin-bottom:.9rem;text-transform:uppercase}
+.csep{height:1px;background:rgba(255,255,255,.05);margin:.75rem 0}
+.cmods{list-style:none}
+.cmods li{display:flex;align-items:flex-start;gap:.5rem;font-size:.76rem;color:rgba(232,238,255,.52);margin-bottom:.38rem;line-height:1.45}
+.cmods li::before{content:'▸';color:var(--ca,var(--gold));font-size:.6rem;flex-shrink:0;margin-top:2px}
+.cfoot{display:flex;align-items:center;justify-content:space-between;margin-top:1.1rem;padding-top:.85rem;border-top:1px solid rgba(255,255,255,.05);flex-wrap:wrap;gap:.5rem}
+.ctags{display:flex;gap:.3rem;flex-wrap:wrap}
+.ctag{font-family:var(--F3);font-size:.5rem;padding:.16rem .48rem;border-radius:1px;background:rgba(255,215,0,.05);border:1px solid rgba(255,215,0,.1);color:rgba(255,215,0,.56);letter-spacing:.06em}
+.dlbtn{display:flex;align-items:center;gap:.32rem;font-family:var(--F3);font-size:.58rem;padding:.42rem .85rem;background:linear-gradient(135deg,var(--gold),var(--gold2));border:none;border-radius:1px;color:#000;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;transition:transform .18s}
+.dlbtn:hover{transform:scale(1.06)}
+.live-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.4rem;margin-top:4rem}
+@media(max-width:700px){.live-grid{grid-template-columns:1fr}}
+.lcard{position:relative;padding:2.4rem;border:1px solid rgba(255,255,255,.055);border-radius:3px;background:var(--dark3);overflow:hidden;transition:transform .3s;cursor:default}
+.lcard:hover{transform:translateY(-5px)}
+.lglow{position:absolute;width:180px;height:180px;border-radius:50%;filter:blur(70px);opacity:.15;top:-50px;right:-50px;pointer-events:none}
+.lnum{position:absolute;top:.8rem;right:1.2rem;font-family:var(--F1);font-size:5rem;color:rgba(255,255,255,.025);line-height:1;pointer-events:none}
+.lic{font-size:2.2rem;display:block;margin-bottom:1.2rem}
+.ltit{font-family:var(--F2);font-size:1.15rem;font-weight:700;color:#fff;margin-bottom:.65rem}
+.ldes{font-size:.83rem;color:rgba(232,238,255,.48);line-height:1.78}
+.lpills{display:flex;gap:.38rem;flex-wrap:wrap;margin-top:1.1rem}
+.lpill{font-family:var(--F3);font-size:.54rem;padding:.22rem .58rem;border-radius:50px;letter-spacing:.08em}
+#docente .bio-grid{display:grid;grid-template-columns:290px 1fr;gap:3rem;margin-top:3rem;align-items:start}
+@media(max-width:750px){#docente .bio-grid{grid-template-columns:1fr}}
+.photo-wrap{position:relative;display:inline-block;text-align:center}
+.photo-frame{position:absolute;inset:-4px;border-radius:20px;background:linear-gradient(135deg,var(--gold),var(--gold2),var(--purple),var(--gold));background-size:300%;animation:gShift 4s linear infinite;z-index:0}
+.photo-img{position:relative;z-index:1;width:100%;max-width:282px;border-radius:17px;display:block;aspect-ratio:3/4;object-fit:cover}
+.photo-ph{position:relative;z-index:1;width:282px;height:340px;border-radius:17px;background:var(--dark2);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;border:1px solid var(--border)}
+.photo-badge{position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000;font-family:var(--F3);font-size:.56rem;font-weight:700;letter-spacing:.1em;padding:.38rem 1.1rem;border-radius:50px;white-space:nowrap;z-index:5}
+.bio-name{font-family:var(--F1);font-size:2.2rem;letter-spacing:.06em;color:var(--gold);margin-bottom:.2rem}
+.bio-role{font-family:var(--F3);font-size:.6rem;letter-spacing:.2em;color:rgba(255,215,0,.38);margin-bottom:1.4rem;text-transform:uppercase}
+.bio-p{font-size:1rem;color:rgba(232,238,255,.62);line-height:1.85;margin-bottom:1.3rem}
+.bio-p strong{color:var(--gold)}
+.skill-chips{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1.4rem}
+.chip{font-family:var(--F3);font-size:.56rem;padding:.25rem .68rem;border-radius:2px;letter-spacing:.08em;transition:transform .2s}
+.chip:hover{transform:translateY(-3px) scale(1.08)}
+.unis-box{background:rgba(255,215,0,.03);border:1px solid rgba(255,215,0,.1);border-radius:3px;padding:1.1rem}
+.unis-lbl{font-family:var(--F3);font-size:.55rem;letter-spacing:.2em;color:rgba(255,215,0,.42);margin-bottom:.7rem;text-transform:uppercase}
+.unis{display:flex;flex-wrap:wrap;gap:.6rem}
+.uni{font-size:.82rem;color:rgba(232,238,255,.62)}
+.bio-socials{display:flex;gap:.7rem;margin-top:1.8rem;flex-wrap:wrap}
+.wa-btn-bio{display:flex;align-items:center;gap:.42rem;padding:.58rem 1.2rem;background:#25D366;border-radius:50px;color:#fff;font-family:var(--F3);font-size:.6rem;font-weight:700;text-decoration:none;cursor:pointer;letter-spacing:.06em;transition:transform .2s,box-shadow .2s}
+.wa-btn-bio:hover{transform:scale(1.05);box-shadow:0 8px 24px rgba(37,211,102,.4)}
+.mail-btn{display:flex;align-items:center;gap:.42rem;padding:.58rem 1.2rem;background:var(--dark);border:1px solid rgba(255,215,0,.24);border-radius:50px;color:var(--gold);font-family:var(--F3);font-size:.6rem;text-decoration:none;cursor:pointer;letter-spacing:.06em;transition:all .2s}
+.mail-btn:hover{background:rgba(255,215,0,.07)}
+.syl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;margin-top:3rem}
+.syl-card{background:var(--dark);border:1px solid rgba(255,215,0,.1);border-radius:3px;padding:1.3rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;transition:border-color .3s,transform .3s}
+.syl-card:hover{border-color:rgba(255,215,0,.28);transform:translateY(-3px)}
+.syl-tech{font-family:var(--F3);font-size:.52rem;letter-spacing:.15em;color:rgba(255,215,0,.48);text-transform:uppercase;margin-bottom:.25rem}
+.syl-name{font-family:var(--F2);font-size:.9rem;font-weight:700;color:#fff}
+.syl-dl{display:flex;align-items:center;gap:.32rem;padding:.48rem .88rem;background:linear-gradient(135deg,var(--gold),var(--gold2));border:none;border-radius:2px;color:#000;font-family:var(--F3);font-size:.58rem;font-weight:700;cursor:pointer;white-space:nowrap;letter-spacing:.06em;text-transform:uppercase;transition:transform .18s;flex-shrink:0}
+.syl-dl:hover{transform:scale(1.06)}
+.cert-wrap{max-width:560px;margin:4rem auto;position:relative}
+.cert-ring{position:absolute;top:50%;left:50%;border-radius:50%;border:1px solid rgba(255,215,0,.06);transform:translate(-50%,-50%);pointer-events:none;animation:rp 4s ease-in-out infinite}
+@keyframes rp{0%,100%{opacity:.2}50%{opacity:.7}}
+.cert-card{position:relative;z-index:2;padding:2.7rem;background:var(--dark);border:1px solid rgba(255,215,0,.18);border-radius:4px;overflow:hidden}
+.cert-top{height:3px;background:linear-gradient(90deg,transparent,var(--gold),#FFF8DC,var(--gold),transparent);margin-bottom:1.8rem;animation:lineGl 2.5s infinite}
+.cert-seal{width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:1.9rem;margin:0 auto 1.2rem;animation:sglow 3s ease-in-out infinite}
+@keyframes sglow{0%,100%{box-shadow:0 0 18px rgba(255,215,0,.28)}50%{box-shadow:0 0 48px rgba(255,215,0,.7)}}
+.cert-name{font-family:var(--F1);font-size:1.8rem;letter-spacing:.14em;color:var(--gold);margin-bottom:.28rem;text-align:center}
+.cert-sub{font-family:var(--F3);font-size:.58rem;letter-spacing:.2em;color:rgba(232,238,255,.27);margin-bottom:1.7rem;text-transform:uppercase;text-align:center}
+.cert-list{list-style:none;background:rgba(255,215,0,.02);border-radius:2px;padding:1.3rem}
+.cert-list li{display:flex;align-items:center;gap:.65rem;font-size:.83rem;color:rgba(232,238,255,.62);padding:.42rem 0;border-bottom:1px solid rgba(255,215,0,.05)}
+.cert-list li:last-child{border:none}
+.cert-list li::before{content:'✦';color:var(--gold);font-size:.58rem;flex-shrink:0}
+footer{position:relative;z-index:2;padding:3.5rem 3rem;border-top:1px solid rgba(255,255,255,.05);background:var(--dark)}
+.foot-in{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:2rem}
+.foot-logo{font-family:var(--F1);font-size:2.2rem;letter-spacing:.2em;color:var(--gold);text-shadow:0 0 18px rgba(255,215,0,.28)}
+.foot-tag{font-family:var(--F3);font-size:.52rem;letter-spacing:.18em;color:rgba(255,215,0,.27);margin-top:.28rem;text-transform:uppercase}
+.foot-links{display:flex;gap:1.8rem;flex-wrap:wrap}
+.foot-links a{font-family:var(--F3);font-size:.6rem;letter-spacing:.1em;color:rgba(232,238,255,.28);text-decoration:none;cursor:pointer;text-transform:uppercase;transition:color .25s}
+.foot-links a:hover{color:var(--gold)}
+.foot-bot{margin-top:1.8rem;padding-top:1.3rem;border-top:1px solid rgba(255,255,255,.04);font-family:var(--F3);font-size:.52rem;color:rgba(232,238,255,.16);letter-spacing:.1em;text-align:center}
+#wa-float{position:fixed;bottom:1.8rem;right:1.8rem;z-index:9990;width:58px;height:58px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;text-decoration:none;animation:waPulse 2.5s ease-in-out infinite;cursor:pointer;box-shadow:0 4px 20px rgba(37,211,102,.45)}
+@keyframes waPulse{0%,100%{box-shadow:0 4px 20px rgba(37,211,102,.45);transform:scale(1)}50%{box-shadow:0 4px 35px rgba(37,211,102,.75);transform:scale(1.06)}}
+#agent-btn{position:fixed;bottom:1.8rem;right:6.5rem;z-index:9990;width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:1.5rem;cursor:pointer;animation:agPulse 3s ease-in-out infinite;box-shadow:0 4px 20px rgba(255,215,0,.38)}
+@keyframes agPulse{0%,100%{box-shadow:0 4px 18px rgba(255,215,0,.38)}50%{box-shadow:0 4px 32px rgba(255,215,0,.7)}}
+#agent-win{position:fixed;bottom:6.2rem;right:1.8rem;width:355px;max-width:94vw;background:var(--dark2);border:1px solid rgba(255,215,0,.18);border-radius:16px;overflow:hidden;z-index:9991;display:none;flex-direction:column;max-height:490px;box-shadow:0 20px 60px rgba(0,0,0,.7)}
+.ag-hdr{display:flex;align-items:center;gap:.8rem;padding:1rem 1.2rem;background:linear-gradient(135deg,rgba(255,215,0,.09),rgba(255,165,0,.04));border-bottom:1px solid rgba(255,215,0,.1);flex-shrink:0}
+.ag-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.ag-nm{font-family:var(--F3);font-size:.7rem;color:var(--gold);letter-spacing:.1em;font-weight:700}
+.ag-st{font-family:var(--F3);font-size:.54rem;color:rgba(37,211,102,.8);letter-spacing:.1em}
+.ag-cl{margin-left:auto;background:none;border:none;color:rgba(232,238,255,.38);font-size:1.1rem;cursor:pointer;line-height:1}
+#ag-msgs{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.7rem;min-height:180px}
+.msg{max-width:86%;padding:.62rem .88rem;border-radius:12px;font-family:var(--F2);font-size:.82rem;line-height:1.55}
+.msg.bot{background:rgba(255,215,0,.07);border:1px solid rgba(255,215,0,.12);color:rgba(232,238,255,.8);align-self:flex-start;border-radius:12px 12px 12px 2px}
+.msg.usr{background:linear-gradient(135deg,rgba(0,255,255,.08),rgba(204,0,255,.08));border:1px solid rgba(0,255,255,.14);color:rgba(232,238,255,.9);align-self:flex-end;border-radius:12px 12px 2px 12px}
+.ag-inp-row{display:flex;gap:.5rem;padding:.75rem 1rem;border-top:1px solid rgba(255,215,0,.1);background:rgba(255,255,255,.02);flex-shrink:0}
+#ag-inp{flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,215,0,.14);border-radius:8px;padding:.52rem .88rem;font-family:var(--F2);font-size:.82rem;color:#E8EEFF;outline:none}
+#ag-inp::placeholder{color:rgba(232,238,255,.22)}
+#ag-send{padding:.52rem .95rem;background:linear-gradient(135deg,var(--gold),var(--gold2));border:none;border-radius:8px;color:#000;font-family:var(--F3);font-size:.62rem;font-weight:700;cursor:pointer;letter-spacing:.08em;white-space:nowrap}
+.sec-dots{position:fixed;right:1.5rem;top:50%;transform:translateY(-50%);z-index:998;display:flex;flex-direction:column;gap:.6rem}
+.sd{width:8px;height:8px;border-radius:50%;border:1px solid rgba(255,215,0,.2);background:transparent;cursor:pointer;transition:all .3s}
+.sd.on{background:var(--gold);border-color:var(--gold);box-shadow:0 0 12px rgba(255,215,0,.5);transform:scale(1.3)}
+@media(max-width:700px){.sec-dots{display:none}}
+
+</style>
+</head>
+<body>
+<div id="cur-ring"></div><div id="cur-dot"></div><div id="scroll-bar"></div>
+<canvas id="bgc"></canvas><canvas id="sound-viz"></canvas>
+<div class="sec-dots" id="secDots"></div>
+
+<div id="hdr-top"><div class="ticker-wrap"><span class="tick">🚀 Clases en vivo via MET</span><span class="tick">⚡ Python #1 en el mundo 2024</span><span class="tick">🏆 Certificación digital verificable</span><span class="tick">🎥 Grabaciones permanentes</span><span class="tick">🤝 Acompañamiento personalizado</span><span class="tick">💼 68% Fortune 500 usa Python</span><span class="tick">⚙️ Talleres prácticos reales</span><span class="tick">📈 $120K salario promedio dev Python</span><span class="tick">🚀 Clases en vivo via MET</span><span class="tick">⚡ Python #1 en el mundo 2024</span><span class="tick">🏆 Certificación digital verificable</span><span class="tick">🎥 Grabaciones permanentes</span><span class="tick">🤝 Acompañamiento personalizado</span><span class="tick">💼 68% Fortune 500 usa Python</span><span class="tick">⚙️ Talleres prácticos reales</span><span class="tick">📈 $120K salario promedio dev Python</span></div></div>
+
+<header id="hdr-main">
+  <div><div class="hm-logo" id="hmLogo" onclick="window.scrollTo({top:0,behavior:'smooth'})">NASHWA</div><div class="hm-sub">Tech Academy · Where Code Becomes Power</div></div>
+  <button class="nav-toggle" id="navToggle">☰</button>
+  <ul class="hm-nav" id="mainNav"><li><a href="#pystats">Python</a></li><li><a href="#quiz">Quiz</a></li><li><a href="#lab">Lab</a></li><li><a href="#cursos">Cursos</a></li><li><a href="#docente">Docente</a></li><li><a href="#silabos">Sílabos</a></li><li><a href="#cert">Certificación</a></li><li><a href="#cursos" class="hm-cta">Inscríbete ↗</a></li></ul>
+  <div style="display:flex;align-items:center;gap:.8rem;flex-wrap:wrap"><div class="live-badge"><span class="live-dot"></span>En vivo ahora</div></div>
+</header>
+
+<section id="hero" data-s>
+  <div class="orbit" style="width:600px;height:600px;animation-duration:40s"></div>
+  <div class="orbit" style="width:900px;height:900px;animation-duration:65s;animation-direction:reverse"></div>
+  <div class="orbit" style="width:1200px;height:1200px;animation-duration:90s"></div>
+  <div class="h-pre">🚀 Academia de Tecnología · Clases en Vivo · MET Platform</div>
+  <div class="nw" id="nwrap"><span class="nt"><span class="ch">N</span><span class="ch">A</span><span class="ch">S</span><span class="ch">H</span><span class="ch">W</span><span class="ch">A</span></span><div class="nline"></div></div>
+  <p class="h-sub">Tech Academy · Where Code Becomes Power</p>
+  <p class="h-desc">Aprende Python, Java, JavaScript y SQL de cero a experto. Clases en vivo, grabadas, talleres prácticos, acompañamiento personalizado y certificación oficial.</p>
+  <div class="h-btns"><button class="btn-g" onclick="document.getElementById('cursos').scrollIntoView({behavior:'smooth'})">⚡ Explorar Cursos</button><button class="btn-o" onclick="document.getElementById('quiz').scrollIntoView({behavior:'smooth'})">🧠 Quiz Interactivo</button></div>
+  <div class="h-stats"><div><div class="h-stat-n">4</div><div class="h-stat-l">Tecnologías</div></div><div><div class="h-stat-n">14</div><div class="h-stat-l">Niveles</div></div><div><div class="h-stat-n">100%</div><div class="h-stat-l">En vivo</div></div><div><div class="h-stat-n">5★</div><div class="h-stat-l">Rating</div></div></div>
+  <div class="scroll-ind"><span class="scroll-txt">SCROLL</span><div class="scroll-line"></div></div>
+</section>
+
+<div class="sband"><div class="sc"><div class="sc-n" data-c="4">0</div><div class="sc-l">Tecnologías</div></div><div class="sc"><div class="sc-n" data-c="14">0</div><div class="sc-l">Niveles totales</div></div><div class="sc"><div class="sc-n" data-c="100" data-s="%">0</div><div class="sc-l">Clases en vivo</div></div><div class="sc"><div class="sc-n" data-c="11">0</div><div class="sc-l">Programas</div></div></div>
+
+<section id="pystats" class="sec sec-alt" data-s>
+  <div class="eyebrow rev">Por qué Python domina el mundo</div>
+  <h2 class="sec-title rev">Python: el lenguaje<br>que lo conquista todo</h2>
+  <p class="sec-desc rev">El más demandado del planeta. Desde IA hasta automatización, Python abre todas las puertas del mercado laboral.</p>
+  <div class="py-grid">
+    <div class="py-card rev"><div class="card-glow"></div><span class="py-ico">🥇</span><div class="py-val">#1</div><div class="py-tit">Lenguaje más popular</div><div class="py-des">Puesto #1 en TIOBE 2024 e IEEE Spectrum.</div></div>
+    <div class="py-card rev"><div class="card-glow"></div><span class="py-ico">💼</span><div class="py-val" data-c="68" data-s="%">0</div><div class="py-tit">Fortune 500 lo usan</div><div class="py-des">OpenAI, Anthropic (Claude), Google, Netflix, NASA, Spotify, Amazon, Meta, JPMorgan y Uber usan Python en producción.</div></div>
+    <div class="py-card rev"><div class="card-glow"></div><span class="py-ico">💰</span><div class="py-val">$120K</div><div class="py-tit">Salario promedio EE.UU.</div><div class="py-des">Desarrolladores Python senior: $100K-$160K USD/año.</div></div>
+    <div class="py-card rev"><div class="card-glow"></div><span class="py-ico">🤖</span><div class="py-val" data-c="95" data-s="%">0</div><div class="py-tit">Proyectos IA usan Python</div><div class="py-des">TensorFlow, PyTorch, scikit-learn son Python-first.</div></div>
+    <div class="py-card rev"><div class="card-glow"></div><span class="py-ico">📦</span><div class="py-val">530K+</div><div class="py-tit">Librerías en PyPI</div><div class="py-des">El ecosistema más grande del mundo.</div></div>
+    <div class="py-card rev"><div class="card-glow"></div><span class="py-ico">📈</span><div class="py-val" data-c="35" data-s="%">0</div><div class="py-tit">Crecimiento empleos/año</div><div class="py-des">Demanda de devs Python crece 35% cada año.</div></div>
+  </div>
+  <div class="bar-tit rev">Popularidad de lenguajes — 2024</div>
+  <div id="barChart" class="rev"></div>
+</section>
+
+<section id="quiz" class="sec sec-alt2" data-s>
+  <div class="eyebrow rev">Desafío interactivo</div>
+  <h2 class="sec-title rev">¿Cuánto sabes<br>de Python?</h2>
+  <p class="sec-desc rev">10 preguntas de operaciones jerárquicas, lógica y fundamentos.</p>
+  <div class="quiz-box rev"><div class="quiz-hdr"><div class="quiz-tit">QUIZ NASHWA</div><div class="quiz-sc" id="qsc">0 / 0</div></div><div class="qpw"><div class="qpf" id="qpf"></div></div><div class="qbody" id="qbody"></div></div>
+</section>
+
+<section id="lab" class="sec sec-alt" data-s>
+  <div class="eyebrow rev">Laboratorio de código</div>
+  <h2 class="sec-title rev">Escribe Python<br>ahora mismo</h2>
+  <p class="sec-desc rev">Edita el código y presiona ▶ Ejecutar.</p>
+  <div class="lab-grid rev">
+    <div><div class="editor"><div class="e-bar"><div class="e-dot" style="background:#FF5F56"></div><div class="e-dot" style="background:#FFBD2E"></div><div class="e-dot" style="background:#27C93F"></div><span class="e-name">main.py — NASHWA Lab</span></div><div class="code-wrap"><div class="line-nums" id="lineNums">1</div><textarea id="eCode" spellcheck="false" autocorrect="off" autocapitalize="off"></textarea></div><button class="run-btn" id="runBtn">▶  EJECUTAR CÓDIGO</button></div>
+      <div class="ex-tabs" id="exTabs"><button class="ex-tab act" data-k="jer">Jerarquía</button><button class="ex-tab" data-k="buc">Bucle</button><button class="ex-tab" data-k="lst">Listas</button><button class="ex-tab" data-k="fn">Función</button><button class="ex-tab" data-k="cls">Clase</button><button class="ex-tab" data-k="inp">input/int/float</button></div>
+      <div class="input-note">💡 <strong>input()</strong> abre diálogo. <strong>int()</strong> convierte a entero. <strong>Ctrl+Enter</strong> ejecuta.</div>
+    </div>
+    <div class="output"><div class="out-lbl">▸ Output</div><div class="exec-time" id="execTime"></div><div id="outArea"><span class="out-ph">Presiona ▶ EJECUTAR para ver el resultado...</span></div></div>
+  </div>
+</section>
+
+<section id="metodos" class="sec sec-alt2" data-s>
+  <div class="eyebrow rev">Metodología NASHWA</div>
+  <h2 class="sec-title rev">Aprende como<br>nunca antes</h2>
+  <div class="met-grid rev">
+    <div class="met-card"><div class="met-n">01</div><span class="met-i">🎥</span><div class="met-t">Clases en Vivo</div><div class="met-d">Sesiones sincrónicas vía MET.</div></div>
+    <div class="met-card"><div class="met-n">02</div><span class="met-i">🎞️</span><div class="met-t">Grabadas</div><div class="met-d">Acceso permanente a grabaciones.</div></div>
+    <div class="met-card"><div class="met-n">03</div><span class="met-i">⚙️</span><div class="met-t">Talleres</div><div class="met-d">Proyectos reales y retos de código.</div></div>
+    <div class="met-card"><div class="met-n">04</div><span class="met-i">🤝</span><div class="met-t">Mentoría</div><div class="met-d">Acompañamiento personalizado.</div></div>
+    <div class="met-card"><div class="met-n">05</div><span class="met-i">🏆</span><div class="met-t">Certificación</div><div class="met-d">Certificados digitales verificables.</div></div>
+  </div>
+</section>
+
+<section id="cursos" class="sec sec-alt" data-s>
+  <div class="eyebrow rev">Rutas de aprendizaje</div>
+  <h2 class="sec-title rev">Domina las tecnologías<br>que mueven el mundo</h2>
+  <div class="filt rev" id="filt"><button class="fb on" data-f="all">Todos</button><button class="fb" data-f="python">Python</button><button class="fb" data-f="java">Java</button><button class="fb" data-f="js">JavaScript</button><button class="fb" data-f="sql">SQL</button></div>
+  <div class="cgrid" id="cgrid"></div>
+</section>
+
+<section id="vivo" class="sec sec-alt2" data-s>
+  <div class="eyebrow rev">Formato de clases</div>
+  <h2 class="sec-title rev">Cada sesión es<br>una aventura</h2>
+  <div class="live-grid">
+    <div class="lcard rev"><div class="lglow" style="background:var(--gold)"></div><div class="lnum">01</div><span class="lic">📡</span><div class="ltit">Transmisión en Vivo</div><div class="ldes">Clases en tiempo real. Chat activo y resolución instantánea.</div><div class="lpills"><span class="lpill" style="background:rgba(255,215,0,.08);color:var(--gold);border:1px solid rgba(255,215,0,.2)">Tiempo real</span></div></div>
+    <div class="lcard rev"><div class="lglow" style="background:var(--purple)"></div><div class="lnum">02</div><span class="lic">🗂️</span><div class="ltit">Material Descargable</div><div class="ldes">Programa y metodología en PDF.</div><div class="lpills"><span class="lpill" style="background:rgba(204,0,255,.08);color:var(--purple);border:1px solid rgba(204,0,255,.2)">PDF</span></div></div>
+    <div class="lcard rev"><div class="lglow" style="background:var(--cyan)"></div><div class="lnum">03</div><span class="lic">🧪</span><div class="ltit">Labs de Código</div><div class="ldes">Escribe y ejecuta código real en cada sesión.</div><div class="lpills"><span class="lpill" style="background:rgba(0,255,255,.08);color:var(--cyan);border:1px solid rgba(0,255,255,.2)">Sandbox</span></div></div>
+    <div class="lcard rev"><div class="lglow" style="background:var(--red)"></div><div class="lnum">04</div><span class="lic">💬</span><div class="ltit">Comunidad NASHWA</div><div class="ldes">Grupo exclusivo y networking con otros devs.</div><div class="lpills"><span class="lpill" style="background:rgba(255,0,60,.08);color:#FF6080;border:1px solid rgba(255,0,60,.2)">Comunidad</span></div></div>
+  </div>
+</section>
+
+<section id="docente" class="sec sec-alt" data-s>
+  <div class="eyebrow rev">Tu instructora</div>
+  <h2 class="sec-title rev">Conoce a quien<br>te guiará</h2>
+  <div class="bio-grid rev">
+    <div style="text-align:center">
+      <div class="photo-wrap"><div class="photo-frame"></div><img class="photo-img" src="foto.jpg" alt="Docente" onerror="this.style.display='none';document.getElementById('phPh').style.display='flex'"><div class="photo-ph" id="phPh" style="display:none"><div style="font-size:3.5rem">👩‍💻</div><div style="font-family:var(--F3);font-size:.58rem;color:rgba(255,215,0,.4);letter-spacing:.15em;text-align:center;padding:0 1rem">Guarda tu imagen como <strong style="color:var(--gold)">foto.jpg</strong></div></div><div class="photo-badge">⭐ Docente NASHWA</div></div>
+      <div class="bio-socials" style="justify-content:center;margin-top:2.5rem"><a class="wa-btn-bio" href="https://wa.me/573105695405?text=Hola!%20Me%20interesa%20NASHWA" target="_blank"><svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> WhatsApp</a><a class="mail-btn" href="mailto:info@nashwa.tech">✉ Email</a></div>
+    </div>
+    <div>
+      <div class="bio-name">Tu Instructora</div>
+      <div class="bio-role">Ing. Sistemas · Telecomunicaciones · Docente · Desarrolladora</div>
+      <p class="bio-p">Ingeniera de Sistemas, egresada de la <strong>Universidad Cooperativa de Colombia</strong>. Diplomados en Desarrollo Web de la <strong>Universidad Piloto de Colombia</strong>.</p>
+      <p class="bio-p">Más de <strong>15 años de experiencia</strong>. Actualmente cursando <strong>Maestría en IA en la Universidad de Valencia, España</strong>.</p>
+      <p class="bio-p">Docente en <strong>Universidad de Antioquia, U. Nacional, Sergio Arboleda, U. del Bosque y SENA</strong>.</p>
+      <div class="skill-chips"><span class="chip" style="background:rgba(0,255,255,.06);border:1px solid rgba(0,255,255,.2);color:var(--cyan)">Python</span><span class="chip" style="background:rgba(255,100,30,.06);border:1px solid rgba(255,100,30,.2);color:#FF641E">Java</span><span class="chip" style="background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.2);color:var(--gold)">JavaScript</span><span class="chip" style="background:rgba(204,0,255,.06);border:1px solid rgba(204,0,255,.2);color:var(--purple)">C#/ASP.NET</span><span class="chip" style="background:rgba(0,255,255,.06);border:1px solid rgba(0,255,255,.2);color:var(--cyan)">SQL</span><span class="chip" style="background:rgba(204,0,255,.06);border:1px solid rgba(204,0,255,.2);color:var(--purple)">IA — U. Valencia</span></div>
+      <div class="unis-box"><div class="unis-lbl">Docente en</div><div class="unis"><span class="uni">🎓 U. de Antioquia</span><span class="uni">🎓 U. Nacional</span><span class="uni">🎓 Sergio Arboleda</span><span class="uni">🎓 U. del Bosque</span><span class="uni">🎓 SENA</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="silabos" class="sec sec-alt2" data-s>
+  <div class="eyebrow rev">Material de estudio</div>
+  <h2 class="sec-title rev">Descarga los<br>sílabos completos</h2>
+  <div class="syl-grid rev" id="sylGrid"></div>
+</section>
+
+<section id="cert" class="sec sec-alt" style="text-align:center" data-s>
+  <div class="eyebrow rev" style="justify-content:center">Certificación oficial</div>
+  <h2 class="sec-title rev">Valida tu conocimiento</h2>
+  <div class="cert-wrap"><div class="cert-ring" style="width:450px;height:450px"></div><div class="cert-ring" style="width:560px;height:560px;animation-delay:1.3s"></div>
+    <div class="cert-card rev"><div class="cert-top"></div><div class="cert-seal">🏅</div><div class="cert-name">Certificado NASHWA</div><div class="cert-sub">Programa de Formación Tecnológica</div>
+      <ul class="cert-list"><li>Nombre del programa y nivel cursado</li><li>Horas académicas y modalidad</li><li>Firma digital del instructor</li><li>Código QR de verificación</li><li>Vigencia indefinida — compatible con LinkedIn</li><li>Portafolio respaldado por NASHWA</li></ul>
+    </div>
+  </div>
+</section>
+
+<footer><div class="foot-in"><div><div class="foot-logo">NASHWA</div><div class="foot-tag">Where Code Becomes Power · 2025</div></div><div class="foot-links"><a href="#hero">Inicio</a><a href="#pystats">Python</a><a href="#quiz">Quiz</a><a href="#lab">Lab</a><a href="#cursos">Cursos</a><a href="#docente">Docente</a><a href="#silabos">Sílabos</a><a href="#cert">Certificación</a></div></div><div class="foot-bot">© 2025 NASHWA Tech Academy · Todos los derechos reservados</div></footer>
+
+<a id="wa-float" href="https://wa.me/573105695405?text=Hola!%20Me%20interesa%20NASHWA" target="_blank"><svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+<div id="agent-btn">🤖</div>
+<div id="agent-win"><div class="ag-hdr"><div class="ag-av">🤖</div><div><div class="ag-nm">NASH — Profesor Asistente Python</div><div class="ag-st">● En línea</div></div><button class="ag-cl">✕</button></div><div id="ag-msgs"></div><div class="ag-inp-row"><input id="ag-inp" type="text" placeholder="Pregunta sobre Python, ejercicios, lógica..."><button id="ag-send">Enviar ↗</button></div></div>
+
+<script>
+(function(){
+'use strict';
+
+/* ═══════════════════════════════════════════════
+   1. CURSOR + TRAILS
+   ═══════════════════════════════════════════════ */
+var ring=document.getElementById('cur-ring'),dot=document.getElementById('cur-dot');
+var mx=0,my=0,dx=0,dy=0,curStarted=false;
+var trails=[];
+for(var ti=0;ti<8;ti++){
+  var tr=document.createElement('div');
+  tr.className='cur-trail';
+  tr.style.cssText='width:4px;height:4px;opacity:0;transition:opacity .3s,transform .3s';
+  document.body.appendChild(tr);
+  trails.push(tr);
+}
+var lastTT=0,tIdx=0;
+document.addEventListener('mousemove',function(e){
+  mx=e.clientX;my=e.clientY;
+  ring.style.left=mx+'px';ring.style.top=my+'px';
+  if(!curStarted){curStarted=true;ring.style.opacity='1';dot.style.opacity='1';}
+  var now=Date.now();
+  if(now-lastTT>50){
+    lastTT=now;
+    var p=trails[tIdx%trails.length];
+    p.style.left=mx+'px';p.style.top=my+'px';
+    p.style.opacity='.4';p.style.transform='translate(-50%,-50%) scale(1)';
+    tIdx++;
+    setTimeout(function(){p.style.opacity='0';p.style.transform='translate(-50%,-50%) scale(0)';},200);
+  }
+});
+(function curTick(){
+  dx+=(mx-dx)*.12;dy+=(my-dy)*.12;
+  dot.style.left=dx+'px';dot.style.top=dy+'px';
+  requestAnimationFrame(curTick);
+})();
+document.querySelectorAll('a,button,.py-card,.met-card,.lcard,.syl-card,.chip').forEach(function(el){
+  el.addEventListener('mouseenter',function(){
+    ring.style.width='50px';ring.style.height='50px';
+    ring.style.borderColor='var(--purple)';ring.style.background='rgba(204,0,255,.06)';
+  });
+  el.addEventListener('mouseleave',function(){
+    ring.style.width='36px';ring.style.height='36px';
+    ring.style.borderColor='var(--gold)';ring.style.background='transparent';
+  });
+});
+
+/* ═══════════════════════════════════════════════
+   2. MOBILE NAV
+   ═══════════════════════════════════════════════ */
+var navT=document.getElementById('navToggle');
+var mainN=document.getElementById('mainNav');
+navT.addEventListener('click',function(){
+  mainN.classList.toggle('open');
+  navT.textContent=mainN.classList.contains('open')?'✕':'☰';
+});
+mainN.querySelectorAll('a').forEach(function(a){
+  a.addEventListener('click',function(){mainN.classList.remove('open');navT.textContent='☰';});
+});
+
+/* ═══════════════════════════════════════════════
+   3. HEADER HIDE ON SCROLL + SCROLL BAR
+   ═══════════════════════════════════════════════ */
+var lastSY=0,hdrEl=document.getElementById('hdr-main');
+window.addEventListener('scroll',function(){
+  var sy=window.scrollY;
+  if(sy>lastSY&&sy>200)hdrEl.classList.add('hide');
+  else hdrEl.classList.remove('hide');
+  lastSY=sy;
+  document.getElementById('scroll-bar').style.width=
+    (sy/(document.body.scrollHeight-window.innerHeight)*100)+'%';
+});
+
+/* ═══════════════════════════════════════════════
+   4. GLITCH LOGO
+   ═══════════════════════════════════════════════ */
+var logoEl=document.getElementById('hmLogo');
+logoEl.addEventListener('mouseenter',function(){logoEl.classList.add('glitch-active');});
+logoEl.addEventListener('mouseleave',function(){logoEl.classList.remove('glitch-active');});
+
+/* ═══════════════════════════════════════════════
+   5. NAV DOTS
+   ═══════════════════════════════════════════════ */
+var allSecs=document.querySelectorAll('[data-s]');
+var dotsWrap=document.getElementById('secDots');
+allSecs.forEach(function(s,i){
+  var d=document.createElement('div');
+  d.className='sd'+(i===0?' on':'');
+  d.addEventListener('click',function(){s.scrollIntoView({behavior:'smooth'});});
+  dotsWrap.appendChild(d);
+});
+var dotObs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){
+      var idx=[].indexOf.call(allSecs,e.target);
+      dotsWrap.querySelectorAll('.sd').forEach(function(d,i){
+        d.classList.toggle('on',i===idx);
+      });
+    }
+  });
+},{threshold:.25});
+allSecs.forEach(function(s){dotObs.observe(s);});
+
+/* ═══════════════════════════════════════════════
+   6. REVEAL ON SCROLL
+   ═══════════════════════════════════════════════ */
+document.querySelectorAll('.rev').forEach(function(el){el.classList.add('rev-h');});
+var revObs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('vis');});
+},{threshold:.05});
+document.querySelectorAll('.rev').forEach(function(el){revObs.observe(el);});
+
+/* ═══════════════════════════════════════════════
+   7. COUNTERS
+   ═══════════════════════════════════════════════ */
+var cntObs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting&&!e.target.dataset.done){
+      e.target.dataset.done='1';
+      var tgt=parseFloat(e.target.dataset.c);
+      var suf=e.target.dataset.s||'';
+      var v=0,inc=tgt/55;
+      var iv=setInterval(function(){
+        v=Math.min(v+inc,tgt);
+        e.target.textContent=Math.floor(v)+suf;
+        if(v>=tgt)clearInterval(iv);
+      },22);
+    }
+  });
+},{threshold:.5});
+document.querySelectorAll('[data-c]').forEach(function(el){cntObs.observe(el);});
+
+/* ═══════════════════════════════════════════════
+   8. BAR CHART
+   ═══════════════════════════════════════════════ */
+var barLangs=[
+  {n:'Python',p:28.5,c:'#FFD700'},{n:'C/C++',p:19.8,c:'#00FFFF'},
+  {n:'Java',p:15.2,c:'#FF641E'},{n:'JavaScript',p:12.1,c:'#C4FF00'},
+  {n:'C#',p:6.3,c:'#CC00FF'},{n:'PHP',p:4.8,c:'#7C5CBF'},
+  {n:'TypeScript',p:3.2,c:'#3178C6'},{n:'Go',p:2.8,c:'#00ADD8'}
+];
+var barEl=document.getElementById('barChart');
+barEl.innerHTML=barLangs.map(function(l){
+  return '<div class="bar-row"><div class="bar-lang">'+l.n+
+    '<\/div><div class="bar-track"><div class="bar-fill" data-p="'+l.p+
+    '" style="background:'+l.c+'"><\/div><\/div><div class="bar-pct">'+l.p+'%<\/div><\/div>';
+}).join('');
+var barObs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){
+      barEl.querySelectorAll('.bar-fill').forEach(function(f){
+        f.style.width=f.dataset.p+'%';
+      });
+      barObs.disconnect();
+    }
+  });
+},{threshold:.3});
+barObs.observe(barEl);
+
+/* ═══════════════════════════════════════════════
+   9. HERO PARALLAX
+   ═══════════════════════════════════════════════ */
+var nwEl=document.getElementById('nwrap');
+var heroEl=document.getElementById('hero');
+heroEl.addEventListener('mousemove',function(e){
+  var rx=(e.clientX/window.innerWidth-.5)*10;
+  var ry=(e.clientY/window.innerHeight-.5)*5;
+  nwEl.style.transform='perspective(800px) rotateY('+rx+'deg) rotateX('+(-ry)+'deg)';
+});
+heroEl.addEventListener('mouseleave',function(){nwEl.style.transform='';});
+
+/* ═══════════════════════════════════════════════
+   10. CARD 3D TILT
+   ═══════════════════════════════════════════════ */
+document.querySelectorAll('.py-card').forEach(function(card){
+  card.addEventListener('mousemove',function(e){
+    var r=card.getBoundingClientRect();
+    var x=(e.clientX-r.left)/r.width;
+    var y=(e.clientY-r.top)/r.height;
+    card.style.transform='translateY(-6px) perspective(600px) rotateY('+(x-.5)*8+'deg) rotateX('+(.5-y)*8+'deg)';
+    var glow=card.querySelector('.card-glow');
+    if(glow){glow.style.left=(e.clientX-r.left)+'px';glow.style.top=(e.clientY-r.top)+'px';}
+  });
+  card.addEventListener('mouseleave',function(){card.style.transform='';});
+});
+
+/* ═══════════════════════════════════════════════
+   11. CANVAS BACKGROUND
+   ═══════════════════════════════════════════════ */
+var bgCv=document.getElementById('bgc'),bgCtx=bgCv.getContext('2d'),cW,cH;
+function rszC(){cW=bgCv.width=window.innerWidth;cH=bgCv.height=window.innerHeight;}
+rszC();window.addEventListener('resize',rszC);
+var bgStars=[];
+for(var si=0;si<160;si++){
+  bgStars.push({x:Math.random()*3000,y:Math.random()*2000,r:Math.random()*1.3+.2,
+    o:Math.random()*.6+.1,spd:Math.random()*.12+.03,ph:Math.random()*Math.PI*2});
+}
+var bgMeteors=[],bgMt=0,bgFr=0;
+function drawBG(){
+  bgCtx.clearRect(0,0,cW,cH);
+  var nebulae=[[.12,.18,255,165,0,.04],[.88,.75,204,0,255,.035],[.5,.45,255,215,0,.028]];
+  for(var ni=0;ni<nebulae.length;ni++){
+    var nb=nebulae[ni];
+    var ng=bgCtx.createRadialGradient(nb[0]*cW,nb[1]*cH,0,nb[0]*cW,nb[1]*cH,350);
+    ng.addColorStop(0,'rgba('+nb[2]+','+nb[3]+','+nb[4]+','+(nb[5]*3)+')');
+    ng.addColorStop(1,'rgba('+nb[2]+','+nb[3]+','+nb[4]+',0)');
+    bgCtx.fillStyle=ng;bgCtx.beginPath();bgCtx.arc(nb[0]*cW,nb[1]*cH,350,0,Math.PI*2);bgCtx.fill();
+  }
+  for(var si2=0;si2<bgStars.length;si2++){
+    var st=bgStars[si2];st.ph+=.015;
+    var sx=(st.x+bgFr*st.spd)%cW,sy=st.y%cH;
+    var so=st.o+Math.sin(st.ph)*.1;
+    bgCtx.beginPath();bgCtx.arc(sx,sy,st.r,0,Math.PI*2);
+    bgCtx.fillStyle='rgba(255,240,180,'+Math.max(0,so)+')';bgCtx.fill();
+    var sd=Math.sqrt((sx-mx)*(sx-mx)+(sy-my)*(sy-my));
+    if(sd<150){
+      bgCtx.beginPath();bgCtx.moveTo(sx,sy);bgCtx.lineTo(mx,my);
+      bgCtx.strokeStyle='rgba(255,215,0,'+(0.06*(1-sd/150))+')';
+      bgCtx.lineWidth=.5;bgCtx.stroke();
+    }
+  }
+  bgMt++;
+  if(bgMt>90){bgMt=0;bgMeteors.push({x:Math.random()*cW,y:0,vx:(Math.random()-.5)*2,vy:Math.random()*5+3,len:Math.random()*80+50,life:1});}
+  for(var mi=bgMeteors.length-1;mi>=0;mi--){
+    var mm=bgMeteors[mi];
+    var mg=bgCtx.createLinearGradient(mm.x,mm.y,mm.x-mm.vx*(mm.len/mm.vy),mm.y-mm.len);
+    mg.addColorStop(0,'rgba(255,215,0,'+(mm.life*.6)+')');mg.addColorStop(1,'rgba(255,215,0,0)');
+    bgCtx.strokeStyle=mg;bgCtx.lineWidth=1.3;bgCtx.beginPath();
+    bgCtx.moveTo(mm.x,mm.y);bgCtx.lineTo(mm.x-mm.vx*(mm.len/mm.vy),mm.y-mm.len);bgCtx.stroke();
+    mm.x+=mm.vx;mm.y+=mm.vy;mm.life-=.015;
+    if(mm.life<=0||mm.y>cH)bgMeteors.splice(mi,1);
+  }
+  bgFr++;requestAnimationFrame(drawBG);
+}
+drawBG();
+
+/* ═══════════════════════════════════════════════
+   12. SOUND VISUALIZER
+   ═══════════════════════════════════════════════ */
+var svCv=document.getElementById('sound-viz'),svCtx=svCv.getContext('2d'),svTime=0;
+function rszSv(){svCv.width=window.innerWidth;svCv.height=50;}
+rszSv();window.addEventListener('resize',rszSv);
+(function drawSV(){
+  svCtx.clearRect(0,0,svCv.width,svCv.height);
+  var cols=['rgba(255,215,0,.3)','rgba(0,255,255,.2)','rgba(204,0,255,.15)'];
+  for(var wi=0;wi<3;wi++){
+    svCtx.beginPath();svCtx.strokeStyle=cols[wi];svCtx.lineWidth=1;
+    for(var xi=0;xi<svCv.width;xi+=3){
+      var yi=25+Math.sin(xi*.01+svTime*(.5+wi*.3)+wi*2)*10*Math.sin(svTime*.2+wi);
+      xi===0?svCtx.moveTo(xi,yi):svCtx.lineTo(xi,yi);
+    }
+    svCtx.stroke();
+  }
+  svTime+=.03;requestAnimationFrame(drawSV);
+})();
+
+/* ═══════════════════════════════════════════════
+   13. CODE RAIN (pooled)
+   ═══════════════════════════════════════════════ */
+var rainSnippets=['for i in range(10):','def calcular():','class Nashwa:','x = 2**3 + 4','print("Hola")','while True:','import os','lambda x:x**2'];
+var rainPoolArr=[],RAIN_MAX=10;
+function spawnRain(){
+  var el;
+  if(rainPoolArr.length<RAIN_MAX){
+    el=document.createElement('div');el.className='rain';
+    document.body.appendChild(el);rainPoolArr.push(el);
+  }else{el=rainPoolArr[Math.floor(Math.random()*rainPoolArr.length)];}
+  el.textContent=rainSnippets[Math.floor(Math.random()*rainSnippets.length)];
+  el.style.left=Math.random()*94+'vw';
+  el.style.fontSize=(Math.random()*.3+.5)+'rem';
+  el.style.animation='none';void el.offsetHeight;
+  el.style.animation='rainF '+(Math.random()*12+10)+'s linear infinite';
+}
+for(var rri=0;rri<6;rri++)setTimeout(spawnRain,rri*900);
+setInterval(spawnRain,3500);
+
+/* ═══════════════════════════════════════════════
+   14. SCROLL PARTICLES
+   ═══════════════════════════════════════════════ */
+var scrollSyms=['{}','()','[]','<\/>','#','def'];
+var lastScrollP=0,scrollThrottle=0;
+window.addEventListener('scroll',function(){
+  var now=Date.now();if(now-scrollThrottle<300)return;
+  var diff=Math.abs(window.scrollY-lastScrollP);
+  if(diff>60){
+    scrollThrottle=now;lastScrollP=window.scrollY;
+    var sp=document.createElement('div');sp.className='scroll-particle';
+    sp.textContent=scrollSyms[Math.floor(Math.random()*scrollSyms.length)];
+    sp.style.left=(Math.random()*80+10)+'vw';
+    sp.style.top=(Math.random()*60+20)+'vh';
+    sp.style.color=['var(--gold)','var(--cyan)','var(--purple)'][Math.floor(Math.random()*3)];
+    document.body.appendChild(sp);
+    setTimeout(function(){sp.remove();},2000);
+  }
+});
+
+/* ═══════════════════════════════════════════════
+   15. CLICK RIPPLE
+   ═══════════════════════════════════════════════ */
+document.addEventListener('click',function(e){
+  var rp=document.createElement('div');rp.className='click-ripple';
+  rp.style.left=e.clientX+'px';rp.style.top=e.clientY+'px';
+  document.body.appendChild(rp);
+  setTimeout(function(){rp.remove();},700);
+});
+
+/* ═══════════════════════════════════════════════
+   16. QUIZ — 100+ PREGUNTAS, 10 ALEATORIAS
+   ═══════════════════════════════════════════════ */
+var ALL_QUESTIONS=[
+{cat:'Jerarquía',q:'2 + 3 * 4 - 1 = ?',opts:['13','19','24','11'],ans:0,exp:'3*4=12, luego 2+12-1=13. Multiplicación antes que suma/resta.'},
+{cat:'Jerarquía',q:'10 / 2 ** 2 = ?',opts:['2.5','25.0','0.4','5.0'],ans:0,exp:'Primero 2**2=4, luego 10/4=2.5. Potencia antes que división.'},
+{cat:'Jerarquía',q:'(3 + 5) * 2 - 4 / 2 = ?',opts:['14.0','12.0','10.0','18.0'],ans:0,exp:'(3+5)=8, 8*2=16, 4/2=2, 16-2=14.0'},
+{cat:'Jerarquía',q:'15 % 4 + 2 ** 3 = ?',opts:['11','10','12','9'],ans:0,exp:'2**3=8, 15%4=3, 3+8=11.'},
+{cat:'Jerarquía',q:'-2 ** 2 en Python = ?',opts:['-4','4','Error','2'],ans:0,exp:'-(2**2) = -4. La potencia tiene más precedencia que el negativo unario.'},
+{cat:'Jerarquía',q:'3 + 4 * 2 / (1 - 5) ** 2 = ?',opts:['3.5','3.0','4.5','Error'],ans:0,exp:'(1-5)=-4, (-4)**2=16, 4*2=8, 8/16=0.5, 3+0.5=3.5'},
+{cat:'Jerarquía',q:'8 // 3 + 2 ** 2 = ?',opts:['6','7','5','4'],ans:0,exp:'2**2=4, 8//3=2, 2+4=6.'},
+{cat:'Jerarquía',q:'5 * 2 - 3 + 4 / 2 = ?',opts:['9.0','8.0','10.0','7.0'],ans:0,exp:'5*2=10, 4/2=2, 10-3+2=9.0'},
+{cat:'Jerarquía',q:'2 ** 3 ** 2 = ?',opts:['512','64','8','Error'],ans:0,exp:'** es asociativo a la derecha: 3**2=9, 2**9=512.'},
+{cat:'Jerarquía',q:'10 - 3 * 2 + 1 = ?',opts:['5','15','16','4'],ans:0,exp:'3*2=6, 10-6+1=5.'},
+{cat:'Jerarquía',q:'20 / 4 / 5 = ?',opts:['1.0','25.0','0.25','Error'],ans:0,exp:'De izquierda a derecha: 20/4=5, 5/5=1.0'},
+{cat:'Jerarquía',q:'7 + 3 * (10 / (12 / (3 + 1) - 1)) = ?',opts:['22.0','17.0','Error','25.0'],ans:0,exp:'(3+1)=4, 12/4=3, 3-1=2, 10/2=5, 3*5=15, 7+15=22.0'},
+{cat:'Jerarquía',q:'100 - 25 * 3 % 4 = ?',opts:['97','1','75','0'],ans:0,exp:'25*3=75, 75%4=3, 100-3=97.'},
+{cat:'Jerarquía',q:'2 + 3 ** 2 * 2 = ?',opts:['20','32','50','22'],ans:0,exp:'3**2=9, 9*2=18, 2+18=20.'},
+{cat:'Jerarquía',q:'not True and False or True = ?',opts:['True','False','Error','None'],ans:0,exp:'not True=False, False and False=False, False or True=True.'},
+{cat:'Bucles',q:'¿Cuántas veces imprime?\nfor i in range(1,5):\n  print("NASHWA")',opts:['4','5','3','6'],ans:0,exp:'range(1,5) genera 1,2,3,4 → 4 iteraciones.'},
+{cat:'Bucles',q:'¿Qué imprime range(0,10,3)?',opts:['0,3,6,9','0,3,6,9,12','1,4,7,10','3,6,9'],ans:0,exp:'Empieza en 0, avanza de 3 en 3, se detiene antes de 10.'},
+{cat:'Bucles',q:'¿Cuántas veces se ejecuta?\nfor i in range(5):\n  print(i)',opts:['5','4','6','Error'],ans:0,exp:'range(5) = 0,1,2,3,4 → 5 veces.'},
+{cat:'Bucles',q:'¿Qué imprime?\nfor i in range(3):\n  if i == 1:\n    continue\n  print(i)',opts:['0 y 2','0, 1 y 2','Solo 1','Error'],ans:0,exp:'continue salta la iteración cuando i==1. Imprime 0 y 2.'},
+{cat:'Bucles',q:'¿Qué imprime?\nfor i in range(5):\n  if i == 3:\n    break\n  print(i)',opts:['0, 1, 2','0, 1, 2, 3','0, 1, 2, 3, 4','Error'],ans:0,exp:'break detiene el bucle cuando i==3. Solo imprime 0, 1, 2.'},
+{cat:'Bucles',q:'¿Cuántas veces imprime?\nfor i in range(2,8,2):\n  print(i)',opts:['3','4','2','6'],ans:0,exp:'range(2,8,2) = 2,4,6 → 3 valores.'},
+{cat:'Bucles',q:'x=10\nwhile x > 0:\n  x -= 3\n¿Valor final de x?',opts:['-2','0','1','Error'],ans:0,exp:'10→7→4→1→-2. El while sigue hasta que x≤0.'},
+{cat:'Bucles',q:'¿Qué genera range(5,0,-1)?',opts:['5,4,3,2,1','5,4,3,2,1,0','0,1,2,3,4,5','Error'],ans:0,exp:'Empieza en 5, baja de 1 en 1, se detiene antes de 0.'},
+{cat:'Tipos',q:'type(7/2) = ?',opts:["float","int","str","Error"],ans:0,exp:'/ siempre retorna float en Python 3: 7/2=3.5'},
+{cat:'Tipos',q:'type(7//2) = ?',opts:["int","float","str","Error"],ans:0,exp:'// retorna int cuando ambos operandos son int: 7//2=3'},
+{cat:'Tipos',q:'type("123") = ?',opts:["str","int","float","list"],ans:0,exp:'"123" tiene comillas → es string, no número.'},
+{cat:'Tipos',q:'type(True) = ?',opts:["bool","int","str","NoneType"],ans:0,exp:'True y False son de tipo bool (booleano).'},
+{cat:'Tipos',q:'type([1,2,3]) = ?',opts:["list","tuple","set","array"],ans:0,exp:'Los corchetes [] crean una lista.'},
+{cat:'Tipos',q:'type((1,2,3)) = ?',opts:["tuple","list","set","dict"],ans:0,exp:'Los paréntesis () con comas crean una tupla.'},
+{cat:'Tipos',q:'type({}) = ?',opts:["dict","set","list","tuple"],ans:0,exp:'{} vacío es un diccionario, no un set. Set vacío: set()'},
+{cat:'Tipos',q:'int("3.5") = ?',opts:["Error","3","3.5","4"],ans:0,exp:'int() no puede convertir un string con punto decimal. Usa int(float("3.5")).'},
+{cat:'Tipos',q:'bool(0) = ?',opts:["False","True","0","Error"],ans:0,exp:'0, "", [], None son Falsy. Cualquier otro valor es Truthy.'},
+{cat:'Tipos',q:'bool("") = ?',opts:["False","True","None","Error"],ans:0,exp:'String vacío es Falsy. "hola" sería Truthy.'},
+{cat:'Listas',q:'lista=[10,20,30,40]\nlista[-1] = ?',opts:['40','10','30','Error'],ans:0,exp:'Índice -1 es el último elemento.'},
+{cat:'Listas',q:'lista=[1,2,3]\nlista.append(4)\nlen(lista) = ?',opts:['4','3','5','Error'],ans:0,exp:'append agrega al final: [1,2,3,4] → longitud 4.'},
+{cat:'Listas',q:'lista=[5,3,8,1]\nlista.sort()\nlista[0] = ?',opts:['1','5','3','8'],ans:0,exp:'sort() ordena ascendente: [1,3,5,8]. Posición 0 = 1.'},
+{cat:'Listas',q:'lista=[1,2,3,4,5]\nlista[1:3] = ?',opts:['[2,3]','[1,2,3]','[2,3,4]','[1,2]'],ans:0,exp:'Slice [1:3] toma índices 1 y 2 (no incluye el 3).'},
+{cat:'Listas',q:'lista=[1,2,3]\nlista.insert(1,"a")\nlista = ?',opts:['[1,"a",2,3]','["a",1,2,3]','[1,2,"a",3]','Error'],ans:0,exp:'insert(1,"a") inserta "a" en la posición 1.'},
+{cat:'Listas',q:'lista=[1,2,3,2,1]\nlista.count(2) = ?',opts:['2','1','3','Error'],ans:0,exp:'count() cuenta las apariciones. El 2 aparece 2 veces.'},
+{cat:'Listas',q:'"hola"[::−1] = ?',opts:['"aloh"','"hola"','Error','"olah"'],ans:0,exp:'[::−1] invierte la cadena/lista.'},
+{cat:'Listas',q:'[1,2]+[3,4] = ?',opts:['[1,2,3,4]','[4,6]','Error','10'],ans:0,exp:'+ concatena listas, no suma elementos.'},
+{cat:'Listas',q:'[0]*3 = ?',opts:['[0,0,0]','[0]','0','Error'],ans:0,exp:'*3 repite la lista 3 veces.'},
+{cat:'Funciones',q:'def sal(n="Mundo"):\n  return f"Hola {n}"\nsal() = ?',opts:['"Hola Mundo"','"Hola n"','Error','None'],ans:0,exp:'Sin argumentos usa el default "Mundo".'},
+{cat:'Funciones',q:'def f(a,b=2):\n  return a*b\nf(3) = ?',opts:['6','Error','32','5'],ans:0,exp:'a=3, b usa default 2. 3*2=6.'},
+{cat:'Funciones',q:'def f(x):\n  return x**2\nf(f(2)) = ?',opts:['16','4','8','Error'],ans:0,exp:'f(2)=4, f(4)=16.'},
+{cat:'Funciones',q:'def f(lst):\n  lst.append(4)\nx=[1,2,3]\nf(x)\nlen(x) = ?',opts:['4','3','Error','1'],ans:0,exp:'Las listas se pasan por referencia. append modifica la original.'},
+{cat:'Funciones',q:'def f():\n  pass\ntype(f()) = ?',opts:["NoneType","function","Error","void"],ans:0,exp:'Una función sin return devuelve None.'},
+{cat:'Funciones',q:'def f(*args):\n  return len(args)\nf(1,2,3) = ?',opts:['3','Error','(1,2,3)','1'],ans:0,exp:'*args recibe todos los argumentos como tupla. len((1,2,3))=3.'},
+{cat:'Funciones',q:'g = lambda x: x*2\ng(5) = ?',opts:['10','Error','x*2','25'],ans:0,exp:'lambda crea una función anónima. g(5) = 5*2 = 10.'},
+{cat:'Funciones',q:'def f(a,b):\n  return a+b, a*b\nf(2,3) = ?',opts:['(5, 6)','5','Error','[5,6]'],ans:0,exp:'Python puede retornar múltiples valores como tupla.'},
+{cat:'Lógica',q:'x=5\nx > 3 and x < 10 = ?',opts:['True','False','Error','5'],ans:0,exp:'5>3 es True, 5<10 es True. True and True = True.'},
+{cat:'Lógica',q:'x=5\nx == 6 or x > 10 = ?',opts:['False','True','Error','5'],ans:0,exp:'5==6 False, 5>10 False. False or False = False.'},
+{cat:'Lógica',q:'not False = ?',opts:['True','False','Error','None'],ans:0,exp:'not invierte el booleano. not False = True.'},
+{cat:'Lógica',q:'x=0\nbool(x) = ?',opts:['False','True','0','Error'],ans:0,exp:'0 es Falsy en Python.'},
+{cat:'Lógica',q:'5 == 5.0 = ?',opts:['True','False','Error','None'],ans:0,exp:'Python compara por valor, no por tipo. 5 == 5.0 es True.'},
+{cat:'Lógica',q:'5 is 5.0 = ?',opts:['False','True','Error','None'],ans:0,exp:'"is" compara identidad (mismo objeto), no valor. Son tipos diferentes.'},
+{cat:'Lógica',q:'"abc" == "ABC" = ?',opts:['False','True','Error','None'],ans:0,exp:'Python es case-sensitive. "abc" ≠ "ABC".'},
+{cat:'Lógica',q:'[] == False = ?',opts:['False','True','Error','None'],ans:0,exp:'[] es Falsy pero no es igual a False. bool([]) sería False.'},
+{cat:'Lógica',q:'True + True = ?',opts:['2','True','Error','TrueTrue'],ans:0,exp:'En Python, True=1, False=0. True+True=1+1=2.'},
+{cat:'Strings',q:'len("Python") = ?',opts:['6','5','7','Error'],ans:0,exp:'P-y-t-h-o-n: 6 caracteres.'},
+{cat:'Strings',q:'"hola" + " " + "mundo" = ?',opts:['"hola mundo"','Error','holamundo','None'],ans:0,exp:'+ concatena strings con el espacio incluido.'},
+{cat:'Strings',q:'"ha" * 3 = ?',opts:['"hahaha"','Error','6','None'],ans:0,exp:'* repite el string 3 veces.'},
+{cat:'Strings',q:'"Python"[0] = ?',opts:['"P"','"p"','"Python"','Error'],ans:0,exp:'Índice 0 = primer carácter = "P" (mayúscula, tal cual).'},
+{cat:'Strings',q:'"Python"[1:4] = ?',opts:['"yth"','"Pyt"','"ytho"','"ython"'],ans:0,exp:'Slice [1:4]: índices 1,2,3 = "yth".'},
+{cat:'Strings',q:'"HOLA".lower() = ?',opts:['"hola"','"HOLA"','Error','None'],ans:0,exp:'.lower() convierte todo a minúsculas.'},
+{cat:'Strings',q:'" hola ".strip() = ?',opts:['"hola"','" hola "','"hola "','Error'],ans:0,exp:'.strip() elimina espacios al inicio y final.'},
+{cat:'Strings',q:'"a,b,c".split(",") = ?',opts:['["a","b","c"]','"a b c"','Error','("a","b","c")'],ans:0,exp:'.split(",") divide el string por comas en una lista.'},
+{cat:'Strings',q:'"Python" in "Aprende Python hoy" = ?',opts:['True','False','Error','"Python"'],ans:0,exp:'"in" verifica si un substring está contenido.'},
+{cat:'Diccionarios',q:'d={"a":1,"b":2}\nd["a"] = ?',opts:['1','a','Error','{"a":1}'],ans:0,exp:'Se accede por clave. d["a"] devuelve el valor 1.'},
+{cat:'Diccionarios',q:'d={"a":1}\nd["b"] = ?',opts:['Error (KeyError)','None','0','""'],ans:0,exp:'Clave inexistente lanza KeyError. Usa d.get("b") para None.'},
+{cat:'Diccionarios',q:'d={"a":1,"b":2}\nlen(d) = ?',opts:['2','4','1','Error'],ans:0,exp:'len() cuenta la cantidad de pares clave:valor.'},
+{cat:'Diccionarios',q:'d={"a":1,"b":2}\n"a" in d = ?',opts:['True','False','1','Error'],ans:0,exp:'"in" verifica si la CLAVE existe en el diccionario.'},
+{cat:'Diccionarios',q:'d={"x":10}\nd["y"]=20\nlen(d) = ?',opts:['2','1','Error','3'],ans:0,exp:'Asignar una nueva clave la agrega al diccionario.'},
+{cat:'POO',q:'class A:\n  def __init__(self):\n    self.x=5\na=A()\na.x = ?',opts:['5','Error','None','A'],ans:0,exp:'__init__ se ejecuta al crear el objeto. self.x=5.'},
+{cat:'POO',q:'¿Qué es self en Python?',opts:['Referencia al objeto actual','Palabra reservada global','Un tipo de dato','El constructor'],ans:0,exp:'self es la referencia al objeto instanciado.'},
+{cat:'POO',q:'class A:\n  pass\ntype(A()) = ?',opts:["<class 'A'>","A","object","Error"],ans:0,exp:'A() crea una instancia de la clase A.'},
+{cat:'POO',q:'class A:\n  x=10\nclass B(A):\n  pass\nB().x = ?',opts:['10','Error','None','0'],ans:0,exp:'B hereda de A. B().x accede al atributo heredado x=10.'},
+{cat:'Excepciones',q:'try:\n  1/0\nexcept:\n  print("Error")\n¿Qué pasa?',opts:['Imprime "Error"','Crash del programa','Imprime 0','No imprime nada'],ans:0,exp:'except atrapa el ZeroDivisionError e imprime "Error".'},
+{cat:'Excepciones',q:'int("abc") produce...',opts:['ValueError','TypeError','NameError','SyntaxError'],ans:0,exp:'"abc" no se puede convertir a entero → ValueError.'},
+{cat:'Excepciones',q:'x[0] si x=""\nproduce...',opts:['IndexError','ValueError','TypeError','KeyError'],ans:0,exp:'String vacío, no hay índice 0 → IndexError.'},
+{cat:'Archivos',q:'open("file.txt","r")\n¿Qué modo es?',opts:['Lectura','Escritura','Agregar','Binario'],ans:0,exp:'"r" = read (lectura). "w"=escribir, "a"=agregar.'},
+{cat:'Archivos',q:'open("f.txt","w") si f.txt existe...',opts:['Sobreescribe el archivo','Agrega al final','Error','No hace nada'],ans:0,exp:'"w" borra todo y escribe desde cero. Usa "a" para agregar.'},
+{cat:'Varios',q:'import math\nmath.sqrt(16) = ?',opts:['4.0','4','16','Error'],ans:0,exp:'sqrt retorna float: 4.0'},
+{cat:'Varios',q:'x=[1,2,3]\ny=x\ny.append(4)\nlen(x) = ?',opts:['4','3','Error','1'],ans:0,exp:'y=x NO copia la lista, ambas apuntan al mismo objeto.'},
+{cat:'Varios',q:'x=[1,2,3]\ny=x.copy()\ny.append(4)\nlen(x) = ?',opts:['3','4','Error','1'],ans:0,exp:'.copy() crea una copia independiente. x no cambia.'},
+{cat:'Varios',q:'print(1,2,3,sep="-") = ?',opts:['"1-2-3"','"1 2 3"','Error','"123"'],ans:0,exp:'sep define el separador entre argumentos de print.'},
+{cat:'Varios',q:'x=None\nx is None = ?',opts:['True','False','Error','None'],ans:0,exp:'Para comparar con None, usa "is", no "==".'},
+{cat:'Varios',q:'list(range(3)) = ?',opts:['[0,1,2]','[1,2,3]','[0,1,2,3]','Error'],ans:0,exp:'range(3) genera 0,1,2. list() lo convierte a lista.'},
+{cat:'Varios',q:'x="hello"\nx[0]="H" = ?',opts:['Error (inmutable)','Hello','hello','None'],ans:0,exp:'Los strings son inmutables. No se pueden modificar por índice.'},
+{cat:'Varios',q:'max([3,1,4,1,5]) = ?',opts:['5','1','3','Error'],ans:0,exp:'max() retorna el valor más grande de la lista.'},
+{cat:'Varios',q:'sum([1,2,3,4]) = ?',opts:['10','4','1234','Error'],ans:0,exp:'sum() suma todos los elementos: 1+2+3+4=10.'},
+{cat:'Varios',q:'sorted([3,1,2]) = ?',opts:['[1,2,3]','[3,2,1]','[3,1,2]','Error'],ans:0,exp:'sorted() retorna nueva lista ordenada sin modificar la original.'},
+{cat:'Varios',q:'x={"a","b","a"}\nlen(x) = ?',opts:['2','3','1','Error'],ans:0,exp:'Los sets no permiten duplicados. {"a","b"} → 2 elementos.'},
+{cat:'Varios',q:'enumerate(["a","b"])\nda...',opts:['(0,"a"),(1,"b")','("a","b")','[0,1]','Error'],ans:0,exp:'enumerate agrega índices automáticos a cada elemento.'},
+{cat:'Varios',q:'zip([1,2],[3,4])\nda...',opts:['(1,3),(2,4)','[1,2,3,4]','Error','[[1,3],[2,4]]'],ans:0,exp:'zip empareja elementos por posición.'},
+{cat:'Varios',q:'[x**2 for x in range(4)] = ?',opts:['[0,1,4,9]','[1,4,9,16]','[0,2,4,6]','Error'],ans:0,exp:'List comprehension: 0²=0, 1²=1, 2²=4, 3²=9.'},
+{cat:'Varios',q:'any([False,False,True]) = ?',opts:['True','False','Error','None'],ans:0,exp:'any() retorna True si al menos un elemento es True.'},
+{cat:'Varios',q:'all([True,True,False]) = ?',opts:['False','True','Error','None'],ans:0,exp:'all() retorna True solo si TODOS son True.'}
+];
+
+function shuffleArray(arr){
+  var a=arr.slice();
+  for(var i=a.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var tmp=a[i];a[i]=a[j];a[j]=tmp;
+  }
+  return a;
+}
+
+var QUIZ_SIZE=10;
+var quizQuestions=shuffleArray(ALL_QUESTIONS).slice(0,QUIZ_SIZE);
+var qIdx=0,qScore=0,qAnswered=false,qStreak=[];
+
+function renderQuiz(){
+  var q=quizQuestions[qIdx];
+  document.getElementById('qpf').style.width=((qIdx/QUIZ_SIZE)*100)+'%';
+  document.getElementById('qsc').textContent=qScore+'/'+qIdx+' correctas';
+  var streakHtml='<div class="streak-bar"><span class="streak-lbl">RACHA:<\/span>';
+  for(var si=0;si<QUIZ_SIZE;si++){
+    var cls=si<qStreak.length?(qStreak[si]?' hit':' miss'):'';
+    var txt=si<qStreak.length?(qStreak[si]?'✓':'✗'):'';
+    streakHtml+='<div class="streak-dot'+cls+'">'+txt+'<\/div>';
+  }
+  streakHtml+='<\/div>';
+  var bodyHtml='<div class="qcat">'+q.cat+' · Pregunta '+(qIdx+1)+'/'+QUIZ_SIZE+'<\/div>'+
+    '<div class="qtxt">'+q.q.replace(/\n/g,'<br>')+'<\/div>'+
+    '<div class="qhint">💡 Piensa en el orden de precedencia<\/div>'+
+    '<div id="qopts" class="qopts"><\/div>'+
+    '<div class="qfb" id="qfb"><\/div>'+
+    '<button class="qnxt" id="qnxt" style="display:none">'+
+    (qIdx<QUIZ_SIZE-1?'Siguiente →':'Ver resultado')+'<\/button>'+streakHtml;
+  document.getElementById('qbody').innerHTML=bodyHtml;
+  qAnswered=false;
+  var optsEl=document.getElementById('qopts');
+  q.opts.forEach(function(opt,oi){
+    var btn=document.createElement('button');
+    btn.className='qopt';
+    btn.textContent=opt;
+    btn.addEventListener('click',function(){handleQuizAnswer(oi);});
+    optsEl.appendChild(btn);
+  });
+  document.getElementById('qnxt').addEventListener('click',function(){
+    qIdx++;
+    if(qIdx>=QUIZ_SIZE){showQuizResult();return;}
+    renderQuiz();
+  });
+}
+
+function handleQuizAnswer(chosenIdx){
+  if(qAnswered)return;
+  qAnswered=true;
+  var q=quizQuestions[qIdx];
+  var allBtns=document.querySelectorAll('#qopts .qopt');
+  var fb=document.getElementById('qfb');
+  allBtns.forEach(function(b){b.style.pointerEvents='none';});
+  if(chosenIdx===q.ans){
+    qScore++;
+    allBtns[chosenIdx].classList.add('ok');
+    fb.className='qfb yes show';
+    fb.textContent='✅ ¡Correcto! '+q.exp;
+    qStreak.push(true);
+  }else{
+    allBtns[chosenIdx].classList.add('no');
+    allBtns[q.ans].classList.add('ok');
+    fb.className='qfb bad show';
+    fb.textContent='❌ Incorrecto. '+q.exp;
+    qStreak.push(false);
+  }
+  document.getElementById('qnxt').style.display='inline-block';
+  document.getElementById('qsc').textContent=qScore+'/'+(qIdx+1)+' correctas';
+}
+
+function showQuizResult(){
+  var pct=Math.round((qScore/QUIZ_SIZE)*100);
+  var emoji=pct>=90?'🏆':pct>=70?'⭐':pct>=50?'💡':'🎯';
+  var msgs=[[90,'¡EXTRAORDINARIO! Dominas Python.'],[70,'¡Muy bien! Base sólida.'],[50,'¡Buen intento! Sigue practicando.'],[0,'¡El viaje comienza aquí!']];
+  var msg=msgs.find(function(m){return pct>=m[0];})[1];
+  document.getElementById('qpf').style.width='100%';
+  document.getElementById('qbody').innerHTML=
+    '<div class="qres"><span class="qr-trophy">'+emoji+'<\/span>'+
+    '<div class="qr-score">'+qScore+'/'+QUIZ_SIZE+'<\/div>'+
+    '<div class="qr-msg">'+msg+'<br><small style="color:rgba(232,238,255,.3)">Banco: '+ALL_QUESTIONS.length+' preguntas · Recarga para nuevas<\/small><\/div>'+
+    '<button class="qr-btn gold" id="qReplay">⟳ Jugar de nuevo<\/button> '+
+    '<button class="qr-btn out" id="qGoCourses">Ver Cursos ↗<\/button><\/div>';
+  document.getElementById('qReplay').addEventListener('click',function(){
+    quizQuestions=shuffleArray(ALL_QUESTIONS).slice(0,QUIZ_SIZE);
+    qIdx=0;qScore=0;qStreak=[];renderQuiz();
+  });
+  document.getElementById('qGoCourses').addEventListener('click',function(){
+    document.getElementById('cursos').scrollIntoView({behavior:'smooth'});
+  });
+}
+renderQuiz();
+
+/* ═══════════════════════════════════════════════
+   17. CODE LAB
+   ═══════════════════════════════════════════════ */
+var EX={
+jer:'# Operaciones Jerarquicas\n# () > ** > * / % // > + -\n\na = 2 + 3 * 4\nb = (2 + 3) * 4\nc = 2 ** 3 + 1\nd = 10 / 2 ** 2\ne = 15 % 4\n\nprint("a =", a)\nprint("b =", b)\nprint("c =", c)\nprint("d =", d)\nprint("e =", e)',
+buc:'# Bucle for\nprint("Tabla del 5:")\nfor i in range(1, 11):\n    resultado = 5 * i\n    print(f"5 x {i} = {resultado}")\n\ntotal = 0\nfor n in range(1, 6):\n    total += n\n    print(f"Suma parcial: {total}")',
+lst:'# Listas\nfrutas = ["mango", "pera", "uva", "kiwi"]\nnums = [10, 25, 3, 88, 42]\n\nprint("Lista:", frutas)\nprint("Primero:", frutas[0])\nprint("Ultimo:", frutas[-1])\nprint("Largo:", len(frutas))\n\nnums.sort()\nprint("Ordenados:", nums)\nprint("Mayor:", nums[-1])',
+fn:'# Funciones\ndef potencia(base, exp=2):\n    return base ** exp\n\ndef saludar(nombre, academia="NASHWA"):\n    return f"Hola {nombre}! Bienvenido a {academia}"\n\nprint(saludar("Estudiante"))\nprint("3^2 =", potencia(3))\nprint("2^10 =", potencia(2, 10))',
+cls:'# Clase POO\nclass Estudiante:\n    def __init__(self, nombre, nivel):\n        self.nombre = nombre\n        self.nivel = nivel\n        self.cursos = []\n    def inscribir(self, curso):\n        self.cursos.append(curso)\n        return f"{self.nombre} inscrito en {curso}"\n    def info(self):\n        return f"{self.nombre} | Nivel {self.nivel}"\n\ne = Estudiante("Ana", 1)\nprint(e.info())\nprint(e.inscribir("Python Nivel 1"))\nprint("Cursos:", e.cursos)',
+inp:'# input(), int() y float()\nnombre = input("Tu nombre: ")\nedad = int(input("Tu edad: "))\naltura = float(input("Altura ej 1.72: "))\n\nprint(f"Hola {nombre}!")\nprint(f"Tienes {edad} anos")\nprint(f"Altura: {altura} m")\nif edad >= 18:\n    print("Mayor de edad")\nelse:\n    print("Menor de edad")'
+};
+var codeEl=document.getElementById('eCode');
+var lineNumsEl=document.getElementById('lineNums');
+codeEl.value=EX.jer;
+
+function updateLineNums(){
+  var count=codeEl.value.split('\n').length;
+  var nums=[];for(var ln=1;ln<=count;ln++)nums.push(ln);
+  lineNumsEl.textContent=nums.join('\n');
+}
+updateLineNums();
+codeEl.addEventListener('input',updateLineNums);
+codeEl.addEventListener('scroll',function(){lineNumsEl.scrollTop=codeEl.scrollTop;});
+codeEl.addEventListener('keydown',function(e){
+  if(e.key==='Tab'){
+    e.preventDefault();
+    var ss=this.selectionStart,se=this.selectionEnd;
+    this.value=this.value.substring(0,ss)+'    '+this.value.substring(se);
+    this.selectionStart=this.selectionEnd=ss+4;
+    updateLineNums();
+  }
+  if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){
+    e.preventDefault();
+    document.getElementById('runBtn').click();
+  }
+});
+
+document.getElementById('exTabs').addEventListener('click',function(e){
+  var btn=e.target.closest('.ex-tab');if(!btn)return;
+  document.querySelectorAll('.ex-tab').forEach(function(t){t.classList.remove('act');});
+  btn.classList.add('act');
+  codeEl.value=EX[btn.dataset.k];
+  updateLineNums();
+  document.getElementById('outArea').innerHTML='<span class="out-ph">Presiona ▶ EJECUTAR...<\/span>';
+  document.getElementById('execTime').textContent='';
+});
+
+document.getElementById('runBtn').addEventListener('click',function(){
+  var code=codeEl.value;
+  var outEl=document.getElementById('outArea');
+  var t0=performance.now();
+  outEl.innerHTML='';
+  var linesOut=[];
+  try{
+    var sb={
+      print:function(){
+        var parts=[];
+        for(var pi=0;pi<arguments.length;pi++){
+          var v=arguments[pi];
+          if(Array.isArray(v)) parts.push('['+v.map(function(x){return typeof x==='string'?'"'+x+'"':String(x);}).join(', ')+']');
+          else parts.push(String(v));
+        }
+        linesOut.push(parts.join(' '));
+      },
+      input:function(prompt){
+        var val=window.prompt(prompt||'Ingresa un valor:');
+        return val!==null?val:'';
+      },
+      range:function(a,b,c){
+        if(b===undefined){b=a;a=0;}
+        if(c===undefined)c=1;
+        var r=[];for(var i=a;c>0?i<b:i>b;i+=c)r.push(i);return r;
+      },
+      len:function(a){return Array.isArray(a)?a.length:String(a).length;},
+      int:function(x){return parseInt(String(x),10);},
+      float:function(x){return parseFloat(String(x));},
+      str:String,abs:Math.abs,round:Math.round,min:Math.min,max:Math.max,
+      sorted:function(a){return[].concat(a).sort(function(x,y){return x-y;});}
+    };
+    // Smart comment removal (preserves # inside strings)
+    var codeLines=code.split('\n'),cleanedCode=[];
+    for(var ci=0;ci<codeLines.length;ci++){
+      var cl=codeLines[ci],inS=false,sCh='',out='';
+      for(var cj=0;cj<cl.length;cj++){
+        var cc=cl[cj];
+        if(!inS&&(cc==='"'||cc==="'")){inS=true;sCh=cc;out+=cc;}
+        else if(inS&&cc===sCh){inS=false;out+=cc;}
+        else if(!inS&&cc==='#'){break;}
+        else{out+=cc;}
+      }
+      cleanedCode.push(out);
+    }
+    var js=cleanedCode.join('\n');
+    // Collect class names for 'new' insertion
+    var classNames=[];
+    code.replace(/class\s+(\w+)/g,function(_,n){classNames.push(n);});
+    // Class patterns BEFORE general def
+    js=js.replace(/class (\w+):/g,'class $1{');
+    js=js.replace(/def __init__\(self,?\s*([^)]*)\):/g,function(_,p){return 'constructor('+p.trim()+'){';});
+    js=js.replace(/def (\w+)\(self,?\s*([^)]*)\):/g,function(_,n,p){return n+'('+p.trim()+'){';});
+    // General def
+    js=js.replace(/def (\w+)\(([^)]*)\):/g,function(_,n,p){
+      var ps=p.split(',').map(function(x){x=x.trim();if(!x)return x;if(x.indexOf('=')>-1){var kv=x.split('=');return kv[0].trim()+'='+kv[1].trim();}return x;}).join(',');
+      return 'function '+n+'('+ps+'){';
+    });
+    js=js.replace(/self\./g,'this.');
+    // f-strings
+    js=js.replace(/f"([^"]*)"/g,function(_,s){return '`'+s.replace(/\{([^}]+)\}/g,'${$1}')+'`';});
+    js=js.replace(/f'([^']*)'/g,function(_,s){return '`'+s.replace(/\{([^}]+)\}/g,'${$1}')+'`';});
+    // Control structures
+    js=js.replace(/for\s+(\w+)\s+in\s+(.+):/g,'for(var $1 of $2){');
+    js=js.replace(/while\s+(.+):/g,'while($1){');
+    js=js.replace(/elif\s+/g,'else if ');
+    js=js.replace(/^(\s*)if\s+(.+):/gm,'$1if($2){');
+    js=js.replace(/^(\s*)else\s+if\s+(.+):/gm,'$1}else if($2){');
+    js=js.replace(/^(\s*)else\s*:/gm,'$1}else{');
+    // Booleans
+    js=js.replace(/\bTrue\b/g,'true');
+    js=js.replace(/\bFalse\b/g,'false');
+    js=js.replace(/\bNone\b/g,'null');
+    // Built-ins
+    js=js.replace(/\bprint\(/g,'sb.print(');
+    js=js.replace(/\binput\(/g,'sb.input(');
+    js=js.replace(/\brange\(/g,'sb.range(');
+    js=js.replace(/\blen\(/g,'sb.len(');
+    js=js.replace(/\bint\(/g,'sb.int(');
+    js=js.replace(/\bfloat\(/g,'sb.float(');
+    js=js.replace(/\bstr\(/g,'sb.str(');
+    js=js.replace(/\babs\(/g,'sb.abs(');
+    js=js.replace(/\bround\(/g,'sb.round(');
+    js=js.replace(/\bsorted\(/g,'sb.sorted(');
+    js=js.replace(/\.sort\(\)/g,'.sort(function(a,b){return a-b;})');
+    js=js.replace(/\.append\(/g,'.push(');
+    js=js.replace(/ and /g,' && ');
+    js=js.replace(/ or /g,' || ');
+    js=js.replace(/\bnot /g,'!');
+    // Add 'new' before class calls
+    classNames.forEach(function(cn){
+      js=js.replace(new RegExp('([^\\w])'+cn+'\\(','g'),'$1new '+cn+'(');
+      js=js.replace(new RegExp('^'+cn+'\\(','gm'),'new '+cn+'(');
+    });
+    // Indent to braces
+    var rawLines=js.split('\n'),result=[],indStack=[0];
+    for(var li=0;li<rawLines.length;li++){
+      var line=rawLines[li];if(!line.trim())continue;
+      var indent=line.search(/\S/);
+      var trimmed=line.trim();
+      while(indent<indStack[indStack.length-1]){
+        indStack.pop();
+        if(!trimmed.startsWith('}'))result.push('}');
+      }
+      if(indent>indStack[indStack.length-1])indStack.push(indent);
+      result.push(line.trimRight());
+    }
+    while(indStack.length>1){indStack.pop();result.push('}');}
+
+    var execFn=new Function('sb',result.join('\n'));
+    execFn(sb);
+
+    if(!linesOut.length){
+      outEl.innerHTML='<span class="out-ph">— sin output. Agrega print() —<\/span>';
+    }else{
+      linesOut.forEach(function(line,idx){
+        setTimeout(function(){
+          var span=document.createElement('span');
+          span.className='out-line';span.textContent=line;
+          outEl.appendChild(span);
+        },idx*40);
+      });
+    }
+  }catch(err){
+    outEl.innerHTML='<span class="out-err">⚠ '+err.message+'<\/span>';
+  }
+  document.getElementById('execTime').textContent='⏱ '+(performance.now()-t0).toFixed(1)+'ms';
+});
+
+/* ═══════════════════════════════════════════════
+   18. COURSES DATA (con Power BI y Agentes IA)
+   ═══════════════════════════════════════════════ */
+var COURSES=[
+{tech:'python',b:'bpy',ac:'var(--cyan)',label:'Python',title:'Python Nivel 1',level:'Fundamentos · 40h',mods:['Sem 1-2: Operaciones jerárquicas y aritméticas (6h)','Sem 3-4: Variables, tipos de datos, conversiones (6h)','Sem 5-6: Entrada/salida estándar con input/print (4h)','Sem 7-8: Estructuras de control: if, elif, else (6h)','Sem 9-10: Bucles for, while, break, continue (6h)','Sem 11-12: Funciones básicas y parámetros (6h)','Sem 13-14: Taller integrador + evaluación final (6h)'],tags:['En vivo','Grabado','Taller','Cert']},
+{tech:'python',b:'bpy',ac:'var(--cyan)',label:'Python',title:'Python Nivel 2',level:'Estructuras y POO · 40h',mods:['Sem 1-2: Listas, tuplas y operaciones (6h)','Sem 3-4: Diccionarios y conjuntos (6h)','Sem 5-6: Funciones avanzadas, lambda, map, filter (6h)','Sem 7-8: POO: Clases, objetos, métodos (6h)','Sem 9-10: Encapsulamiento y atributos (4h)','Sem 11-12: Proyecto integrador POO (6h)','Sem 13-14: Taller final + evaluación (6h)'],tags:['En vivo','Grabado','Taller','Cert']},
+{tech:'python',b:'bpy',ac:'var(--cyan)',label:'Python',title:'Python Nivel 3',level:'POO Avanzada · 40h',mods:['Sem 1-2: Manejo de archivos lectura/escritura (6h)','Sem 3-4: Herencia simple y múltiple (6h)','Sem 5-6: Polimorfismo y métodos especiales (6h)','Sem 7-8: Manejo de excepciones try/except (6h)','Sem 9-10: Módulos, paquetes y pip (6h)','Sem 11-12: Proyecto: sistema con archivos y POO (6h)','Sem 13-14: Evaluación final y portafolio (4h)'],tags:['En vivo','Grabado','Taller','Cert']},
+{tech:'python',b:'bpy',ac:'var(--cyan)',label:'Python',title:'Python Nivel 4',level:'Profesional · 40h',mods:['Sem 1-2: Decoradores y context managers (6h)','Sem 3-4: Generadores e iteradores (6h)','Sem 5-6: Programación funcional avanzada (6h)','Sem 7-8: Conexión a bases de datos SQLite/MySQL (6h)','Sem 9-10: Consumo de APIs REST con requests (6h)','Sem 11-12: Proyecto: app con BD y APIs (6h)','Sem 13-14: Code review y evaluación (4h)'],tags:['En vivo','Grabado','Taller','Cert']},
+{tech:'python',b:'bpy',ac:'var(--cyan)',label:'Python',title:'Python Nivel 5',level:'Expert · 40h',mods:['Sem 1-2: Testing con pytest y TDD (6h)','Sem 3-4: Flask: rutas, templates, formularios (6h)','Sem 5-6: Flask: API REST completa (6h)','Sem 7-8: Automatización y scripting (6h)','Sem 9-10: Despliegue en la nube (6h)','Sem 11-12: Capstone project desarrollo completo (6h)','Sem 13-14: Presentación + portfolio profesional (4h)'],tags:['En vivo','Grabado','Taller','Cert']},
+{tech:'java',b:'bja',ac:'#FF641E',label:'Java',title:'Java Nivel 1',level:'Fundamentos · 40h',mods:['Sem 1-2: Sintaxis Java, JVM y compilación (6h)','Sem 3-4: Tipos primitivos y wrappers (6h)','Sem 5-6: Operadores y expresiones (4h)','Sem 7-8: Estructuras de control (6h)','Sem 9-10: Arrays y strings (6h)','Sem 11-12: Intro a POO: clases y objetos (6h)','Sem 13-14: Proyecto + evaluación (6h)'],tags:['En vivo','Grabado','Taller','Cert']},
+{tech:'java',b:'bja',ac:'#FF641E',label:'Java',title:'Java Nivel 2',level:'POO Avanzada · 40h',mods:['Sem 1-2: Colecciones: ArrayList, LinkedList (6h)','Sem 3-4: Interfaces funcionales y lambdas (6h)','Sem 5-6: Herencia y clases abstractas (6h)','Sem 7-8: Polimorfismo y patrones (6h)','Sem 9-10: Streams y excepciones (6h)','Sem 11-12: Proyecto empresarial simulado (6h)','Sem 13-14: Evaluación + certificación (4h)'],tags:['En vivo','Grabado','Taller','Cert']},
+{tech:'js',b:'bjs',ac:'var(--gold)',label:'JavaScript',title:'JS Nivel 1',level:'Fundamentos · 40h',mods:['Sem 1-2: Variables var/let/const y scope (6h)','Sem 3-4: Tipos de datos y coerción (6h)','Sem 5-6: Estructuras de control (4h)','Sem 7-8: Funciones, closures, callbacks (6h)','Sem 9-10: Arrays, objetos, destructuring (6h)','Sem 11-12: ES6+: spread, rest, template literals (6h)','Sem 13-14: Mini-proyecto + evaluación (6h)'],tags:['En vivo','Grabado','Taller','Cert']},
+{tech:'js',b:'bjs',ac:'var(--gold)',label:'JavaScript',title:'JS Nivel 2',level:'DOM y Async · 40h',mods:['Sem 1-2: Manipulación del DOM (6h)','Sem 3-4: Eventos y delegación (6h)','Sem 5-6: Promesas y async/await (6h)','Sem 7-8: Fetch API y consumo de APIs (6h)','Sem 9-10: LocalStorage y manejo de estado (6h)','Sem 11-12: Proyecto: app interactiva completa (6h)','Sem 13-14: Deploy en Netlify + evaluación (4h)'],tags:['En vivo','Grabado','Taller','Cert']},
+{tech:'sql',b:'bsq',ac:'var(--purple)',label:'SQL',title:'SQL Nivel 1',level:'Modelo ER · 40h',mods:['Sem 1-2: Conceptos fundamentales de BD (6h)','Sem 3-4: Modelo ER: notación completa (6h)','Sem 5-6: Entidades fuertes y débiles (6h)','Sem 7-8: Cardinalidad y participación (6h)','Sem 9-10: Del ER al modelo relacional (6h)','Sem 11-12: Diseño de BD real completa (6h)','Sem 13-14: Evaluación + certificación (4h)'],tags:['En vivo','Grabado','Taller','Cert']},
+{tech:'sql',b:'bsq',ac:'var(--purple)',label:'SQL',title:'SQL Nivel 2',level:'Relacional Avanzado · 40h',mods:['Sem 1-2: Normalización 1FN, 2FN, 3FN (6h)','Sem 3-4: DDL: CREATE, ALTER, DROP (6h)','Sem 5-6: DML: SELECT, JOINs, subconsultas (6h)','Sem 7-8: Vistas, índices y triggers (6h)','Sem 9-10: Transacciones ACID y optimización (6h)','Sem 11-12: Proyecto: sistema completo con BD (6h)','Sem 13-14: Evaluación final (4h)'],tags:['En vivo','Grabado','Taller','Cert']},
+{tech:'python',b:'bpy',ac:'var(--cyan)',label:'Próximamente',title:'Power BI + Python',level:'Análisis de Datos · 40h',mods:['Sem 1-2: Introducción a análisis de datos (6h)','Sem 3-4: Pandas: DataFrames y Series (6h)','Sem 5-6: Limpieza y transformación de datos (6h)','Sem 7-8: Visualización con Matplotlib/Seaborn (6h)','Sem 9-10: Intro a Power BI: dashboards (6h)','Sem 11-12: Integración Python + Power BI (6h)','Sem 13-14: Proyecto: dashboard ejecutivo (4h)'],tags:['Próximamente','En vivo','Cert']},
+{tech:'python',b:'bpy',ac:'var(--cyan)',label:'Próximamente',title:'Agentes IA con Python',level:'Inteligencia Artificial · 40h',mods:['Sem 1-2: Fundamentos de IA y LLMs (6h)','Sem 3-4: APIs de OpenAI y Anthropic (6h)','Sem 5-6: Prompt engineering avanzado (6h)','Sem 7-8: LangChain: cadenas y agentes (6h)','Sem 9-10: RAG y bases de conocimiento (6h)','Sem 11-12: Agentes autónomos con herramientas (6h)','Sem 13-14: Proyecto: agente IA funcional (4h)'],tags:['Próximamente','En vivo','Cert']}
+];
+
+function renderCourses(filter){
+  var list=filter==='all'?COURSES:COURSES.filter(function(c){return c.tech===filter;});
+  var cgridEl=document.getElementById('cgrid');
+  cgridEl.innerHTML=list.map(function(c,idx){
+    var ci=COURSES.indexOf(c);
+    return '<div class="ccard" style="--ca:'+c.ac+'" data-ci="'+ci+'">'+
+      '<div class="cbadge '+c.b+'">'+c.label+'<\/div>'+
+      '<div class="ctit">'+c.title+'<\/div>'+
+      '<div class="clvl">'+c.level+'<\/div><div class="csep"><\/div>'+
+      '<ul class="cmods">'+c.mods.map(function(m){return '<li>'+m+'<\/li>';}).join('')+'<\/ul>'+
+      '<div class="cfoot"><div class="ctags">'+c.tags.map(function(t){return '<span class="ctag">'+t+'<\/span>';}).join('')+'<\/div>'+
+      '<button class="dlbtn" data-dl="'+ci+'">⬇ Programa<\/button><\/div><\/div>';
+  }).join('');
+}
+document.getElementById('filt').addEventListener('click',function(e){
+  var btn=e.target.closest('.fb');if(!btn)return;
+  document.querySelectorAll('.fb').forEach(function(x){x.classList.remove('on');});
+  btn.classList.add('on');
+  renderCourses(btn.dataset.f);
+});
+document.getElementById('cgrid').addEventListener('click',function(e){
+  var btn=e.target.closest('.dlbtn');if(!btn)return;e.stopPropagation();
+  var c=COURSES[parseInt(btn.dataset.dl)];
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([buildDoc(c,false)],{type:'text/html'}));
+  a.download='NASHWA_'+c.title.replace(/\s+/g,'_')+'.html';a.click();
+});
+renderCourses('all');
+
+/* SYLLABUS */
+var sylEl=document.getElementById('sylGrid');
+sylEl.innerHTML=COURSES.map(function(c,idx){
+  return '<div class="syl-card"><div><div class="syl-tech">'+c.label+'<\/div>'+
+    '<div class="syl-name">'+c.title+'<\/div><\/div>'+
+    '<button class="syl-dl" data-si="'+idx+'">'+
+    '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/><\/svg> Sílabo<\/button><\/div>';
+}).join('');
+sylEl.addEventListener('click',function(e){
+  var btn=e.target.closest('.syl-dl');if(!btn)return;
+  var c=COURSES[parseInt(btn.dataset.si)];
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([buildDoc(c,true)],{type:'text/html'}));
+  a.download='Silabo_'+c.title.replace(/\s+/g,'_')+'.html';a.click();
+});
+
+function buildDoc(c,isSyl){
+  var y=new Date().getFullYear();
+  var body='<h2>Objetivo<\/h2><p>Dominar los conceptos de '+c.title+' ('+c.level+')<\/p>'+
+    '<h2>Contenido Temático — Currículo '+c.level+'<\/h2><ul>'+
+    c.mods.map(function(m){return '<li>'+m+'<\/li>';}).join('')+'<\/ul>'+
+    '<h2>Metodología<\/h2><p>Clases en vivo vía MET, talleres prácticos, grabaciones permanentes y acompañamiento personalizado.<\/p>';
+  if(isSyl) body+='<h2>Evaluación<\/h2><ul><li>Participación activa en clases en vivo: 20%<\/li><li>Talleres y ejercicios prácticos: 30%<\/li><li>Proyecto integrador por módulo: 30%<\/li><li>Proyecto final del nivel: 20%<\/li><\/ul><h2>Certificación<\/h2><p>Al aprobar recibirás un Certificado Digital NASHWA Tech Academy verificable con código QR.<\/p>';
+  return '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>NASHWA — '+c.title+'<\/title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Rajdhani,sans-serif;background:#020510;color:#E8EEFF;padding:48px;max-width:740px;margin:0 auto}h1{font-size:2rem;color:#fff;margin:1rem 0}h2{font-size:1.1rem;color:#FFD700;margin:1.5rem 0 .5rem;border-left:3px solid #FFD700;padding-left:.6rem}p,li{font-size:.9rem;color:rgba(232,238,255,.7);line-height:1.8}ul{list-style:none}li{padding:.3rem 0;padding-left:1rem;position:relative}li::before{content:"▸";position:absolute;left:0;color:#FFD700}<\/style><\/head><body><div style="height:4px;background:linear-gradient(90deg,#FFD700,#FFA500,#CC00FF);margin-bottom:2rem"><\/div><div style="font-size:2.5rem;letter-spacing:.2em;color:#FFD700;font-weight:700">NASHWA<\/div><h1>'+c.title+' — '+c.level+'<\/h1>'+body+'<p style="margin-top:3rem;font-size:.5rem;color:rgba(232,238,255,.16)">'+y+' NASHWA Tech Academy · Where Code Becomes Power<\/p><\/body><\/html>';
+}
+
+/* ═══════════════════════════════════════════════
+   19. AGENTE TUTOR — PROFESOR ASISTENTE DE PYTHON
+   ═══════════════════════════════════════════════ */
+var agentOpen=false,agentGreeted=false;
+var TUTOR_KB=[
+{k:['precedencia','orden','jerarqu','prior','primero','antes'],r:'El orden de operaciones en Python es:\n1° Paréntesis ()\n2° Potencia **\n3° Negativo unario -x\n4° Multiplicación *, División /, Módulo %, División entera //\n5° Suma + y Resta -\n6° Comparaciones ==, !=, >, <\n7° not → and → or\n\n¿Tienes un ejercicio específico? Te ayudo a analizarlo paso a paso.'},
+{k:['potencia','**','elevar','exponente','cuadrado','cubo'],r:'El operador ** calcula potencias. Ejemplo: 2**3 = 8.\n\n⚠️ Cuidado: ** tiene MÁS precedencia que el negativo:\n-2**2 = -(2**2) = -4\n(-2)**2 = 4\n\nTambién: ** es asociativo a la DERECHA:\n2**3**2 = 2**(3**2) = 2**9 = 512\n\n¿Necesitas resolver alguna expresión con potencias?'},
+{k:['modulo','%','residuo','resto','divisible','par','impar'],r:'El operador % devuelve el RESIDUO de la división.\n\nEjemplo: 15%4 = 3 (porque 15÷4 = 3 con residuo 3)\n\nTrucos útiles:\n• Si x%2 == 0 → x es PAR\n• Si x%2 != 0 → x es IMPAR\n• Si x%y == 0 → x es divisible por y\n\n¿Quieres practicar con algún ejercicio?'},
+{k:['division','//','entera','decimal','float'],r:'Python tiene DOS tipos de división:\n\n/ → División normal (siempre retorna float)\n  10/3 = 3.333...\n  10/2 = 5.0 (¡float!)\n\n// → División entera (descarta decimales)\n  10//3 = 3\n  7//2 = 3\n\n¿Cuál necesitas para tu ejercicio?'},
+{k:['range','rango','for','bucle','ciclo','iterar','veces','cuantas'],r:'range() genera secuencias de números:\n\nrange(5) → 0,1,2,3,4 (5 números)\nrange(1,5) → 1,2,3,4 (NO incluye el 5)\nrange(0,10,2) → 0,2,4,6,8 (de 2 en 2)\nrange(5,0,-1) → 5,4,3,2,1 (cuenta atrás)\n\nPara saber cuántas veces se repite un for:\nCuenta los valores que genera range.\n\n¿Tienes un bucle específico que analizar?'},
+{k:['lista','indice','index','append','arreglo','posicion','elemento'],r:'Las listas empiezan en índice 0:\nlista = [10, 20, 30, 40]\nlista[0] = 10 (primero)\nlista[-1] = 40 (último)\nlista[1:3] = [20,30] (slice)\n\nMétodos importantes:\n.append(x) → agrega al final\n.insert(i,x) → inserta en posición i\n.sort() → ordena\n.pop() → elimina último\nlen(lista) → cantidad\n\n¿Qué operación con listas necesitas entender?'},
+{k:['funcion','def','parametro','argumento','return','retorn','llamar'],r:'Definir una función:\ndef nombre(param1, param2="default"):\n    # código\n    return resultado\n\nConceptos clave:\n• Los parámetros con = tienen valor por defecto\n• return envía el resultado de vuelta\n• Sin return, la función retorna None\n• Los argumentos se pasan por posición o nombre\n\n¿Tienes una función que no entiendes? Descríbemela.'},
+{k:['clase','class','objeto','poo','self','init','constructor','herencia'],r:'POO en Python:\n\nclass → define una plantilla\n__init__ → constructor (se ejecuta al crear objeto)\nself → referencia al objeto actual\n\nEstructura:\nclass Animal:\n    def __init__(self, nombre):\n        self.nombre = nombre  # atributo\n    def hablar(self):         # método\n        return "..."\n\nHerencia: class Perro(Animal): hereda todo de Animal.\n\n¿Qué concepto de POO necesitas aclarar?'},
+{k:['if','elif','else','condicion','comparar','verdadero','falso'],r:'Estructura condicional:\n\nif condicion:\n    # si es True\nelif otra_condicion:\n    # si la primera fue False y esta True\nelse:\n    # si ninguna fue True\n\nOperadores: == != > < >= <=\n\n⚠️ Recuerda: = es asignación, == es comparación.\n\n¿Necesitas ayuda con alguna condición específica?'},
+{k:['and','or','not','logic','boole','verdad','tabla'],r:'Operadores lógicos:\n\nand → AMBOS deben ser True\n  True and True = True\n  True and False = False\n\nor → AL MENOS UNO True\n  False or True = True\n  False or False = False\n\nnot → INVIERTE\n  not True = False\n\nPrecedencia: not > and > or\n\n¿Tienes una expresión lógica que evaluar?'},
+{k:['input','leer','usuario','teclado','pedir','dato','ingresar'],r:'input() siempre devuelve STRING.\n\nPara números:\nedad = int(input("Tu edad: "))\naltura = float(input("Altura: "))\n\n⚠️ Errores comunes:\n• Olvidar convertir: "5" + "3" = "53" (no 8)\n• int("3.5") da Error (usa float primero)\n\n¿Qué tipo de dato necesitas pedir al usuario?'},
+{k:['print','imprimir','mostrar','salida','f-string','format'],r:'print() muestra en pantalla:\n\nprint("Hola") → Hola\nprint("a =", a) → a = 5\nprint(f"Tengo {edad} años") → f-string\nprint(1,2,3,sep="-") → 1-2-3\nprint("hola",end="!") → hola! (sin salto)\n\n¿Necesitas formatear algo específico?'},
+{k:['error','traceback','bug','falla','no funciona','problem'],r:'Errores comunes y cómo resolverlos:\n\n• IndentationError → revisa tabulación (4 espacios)\n• NameError → variable no definida o mal escrita\n• TypeError → operación con tipo incorrecto\n• SyntaxError → error de escritura (falta : o paréntesis)\n• IndexError → índice fuera de rango\n• ValueError → valor no válido para conversión\n\nLee SIEMPRE el mensaje de error. Dice la LÍNEA exacta.\n\n¿Qué error te aparece?'},
+{k:['string','cadena','texto','str','comillas','mayus','minus'],r:'Strings (cadenas de texto):\n\n"hola"[0] = "h"\nlen("Python") = 6\n"hola".upper() = "HOLA"\n"HOLA".lower() = "hola"\n" hola ".strip() = "hola"\n"a,b,c".split(",") = ["a","b","c"]\n"hola"*3 = "holaholahola"\n\nLos strings son INMUTABLES.\n\n¿Qué operación con strings necesitas?'},
+{k:['while','infinito','break','continue','detener','parar'],r:'while repite MIENTRAS la condición sea True:\n\nx = 5\nwhile x > 0:\n    print(x)\n    x -= 1  # ¡Importante! Sin esto = bucle infinito\n\nbreak → sale del bucle inmediatamente\ncontinue → salta a la siguiente iteración\n\n⚠️ Siempre asegúrate de que la condición eventualmente sea False.\n\n¿Tu while no se detiene? Revisa si la variable de control cambia.'},
+{k:['variable','asignar','nombre','tipo','declarar'],r:'Variables en Python:\n\nx = 5       # int\ny = 3.14    # float\nz = "hola"  # str\nw = True    # bool\n\nReglas de nombres:\n• Empiezan con letra o _\n• No usar palabras reservadas (if, for, class...)\n• Son case-sensitive (edad ≠ Edad)\n• Usa nombres descriptivos: precio_total > pt\n\n¿Tienes dudas sobre algún tipo de dato?'},
+{k:['diccionario','dict','clave','valor','key','llave'],r:'Diccionarios: pares clave:valor\n\nd = {"nombre": "Ana", "edad": 25}\nd["nombre"] → "Ana"\nd["nueva"] = "valor"  # agregar\nlen(d) → cantidad de pares\n"nombre" in d → True\nd.keys() → claves\nd.values() → valores\nd.get("x", "default") → sin error si no existe\n\n¿Qué necesitas hacer con un diccionario?'},
+{k:['openai','anthropic','claude','chatgpt','ia','inteligencia','empresas','quien usa','usa python'],r:'¡Grandes empresas usan Python!\n\n🤖 IA: OpenAI (ChatGPT), Anthropic (Claude, ¡yo!), Google (DeepMind), Meta (LLaMA)\n📊 Data: Netflix, Spotify, Instagram\n🚀 Tech: Google, Amazon, NASA, Uber\n📈 Finanzas: JPMorgan, Goldman Sachs\n\nPython es el lenguaje #1 para IA, datos y automatización. ¡Es la mejor inversión para tu carrera!'},
+{k:['power bi','dashboard','analisis','datos','visualiz'],r:'¡Próximamente tendremos el curso Power BI + Python para Análisis de Datos! 40 horas donde aprenderás Pandas, Matplotlib, Seaborn y Power BI. Escríbenos por WhatsApp para información.'},
+{k:['agente','agentes','langchain','rag','llm','gpt'],r:'¡Próximamente: Agentes IA con Python! 40 horas cubriendo APIs de OpenAI/Anthropic, LangChain, RAG y agentes autónomos. ¡La frontera de la tecnología! Escríbenos por WhatsApp.'},
+{k:['como','ayuda','resolver','ejercicio','problema','no entiendo','explicar','duda','no se','que hago','paso'],r:'¡Con gusto te ayudo! Para analizar tu ejercicio necesito que me digas:\n\n1️⃣ ¿Qué te pide el ejercicio?\n2️⃣ ¿Qué datos tienes?\n3️⃣ ¿Qué has intentado hasta ahora?\n\nYo te guío con la LÓGICA, no te doy el código. Así realmente aprendes 💪\n\n¿Cuál es tu ejercicio?'},
+{k:['hola','buenas','hey','hi','buenos','saludos'],r:'¡Hola! Soy NASH 🤖, tu profesor asistente de Python en NASHWA Tech Academy.\n\nPuedo ayudarte con:\n📐 Operaciones y jerarquía de operadores\n🔄 Bucles: for, while, range\n📋 Listas, diccionarios, strings\n⚙️ Funciones y POO\n🧠 Lógica para resolver ejercicios\n\n💡 No te doy código, pero te guío paso a paso.\n\n¿Cuál es tu duda?'},
+{k:['gracias','genial','perfecto','entendi','claro'],r:'¡Excelente! Me alegra que te haya servido 💪\n\nRecuerda: programar es como un músculo, se fortalece con práctica diaria.\n\n¿Tienes otra duda?'}
+];
+
+document.getElementById('agent-btn').addEventListener('click',function(){
+  agentOpen=!agentOpen;
+  var win=document.getElementById('agent-win');
+  if(agentOpen){
+    win.style.display='flex';
+    if(!agentGreeted){
+      agentGreeted=true;
+      setTimeout(function(){
+        addAgentMsg('bot','¡Hola! Soy NASH 🤖, tu profesor asistente de Python en NASHWA.\n\nPregúntame sobre operaciones, bucles, listas, funciones, POO o pídeme ayuda con un ejercicio.\n\n💡 Te guío con la lógica, no te doy código. ¡Así aprendes de verdad!');
+      },350);
+    }
+    document.getElementById('ag-inp').focus();
+  }else{
+    win.style.display='none';
+  }
+});
+document.querySelector('.ag-cl').addEventListener('click',function(){
+  agentOpen=false;
+  document.getElementById('agent-win').style.display='none';
+});
+
+function addAgentMsg(type,text){
+  var container=document.getElementById('ag-msgs');
+  var el=document.createElement('div');
+  el.className='msg '+type;
+  el.textContent=text;
+  container.appendChild(el);
+  container.scrollTop=container.scrollHeight;
+}
+
+var agConvHistory=[];
+function handleAgentSend(){
+  var inpEl=document.getElementById('ag-inp');
+  var txt=inpEl.value.trim();
+  if(!txt)return;
+  addAgentMsg('usr',txt);
+  inpEl.value='';
+  var low=txt.toLowerCase();
+  var bestMatch=null,bestScore=0;
+  for(var fi=0;fi<TUTOR_KB.length;fi++){
+    var score=0;
+    for(var fj=0;fj<TUTOR_KB[fi].k.length;fj++){
+      if(low.indexOf(TUTOR_KB[fi].k[fj])>-1)score++;
+    }
+    if(score>bestScore){bestScore=score;bestMatch=TUTOR_KB[fi].r;}
+  }
+  if(bestScore>=2){
+    setTimeout(function(){addAgentMsg('bot',bestMatch);},300);
+    return;
+  }
+  agConvHistory.push({role:'user',content:txt});
+  var typingEl=document.createElement('div');typingEl.className='msg bot';typingEl.textContent='Pensando...';typingEl.style.opacity='.5';
+  var msgsC=document.getElementById('ag-msgs');msgsC.appendChild(typingEl);msgsC.scrollTop=msgsC.scrollHeight;
+  fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:600,
+      system:'Eres NASH, profesor asistente de Python en NASHWA Tech Academy. Tu rol: 1) Ayudar a estudiantes con dudas de logica de programacion. 2) NUNCA des codigo completo. Guia con pistas, preguntas socraticas y explicaciones de logica. 3) Si te piden codigo, explica el PASO A PASO logico sin escribir el codigo. 4) Puedes dar ejemplos muy pequeños (1-2 lineas) para ilustrar conceptos. 5) Conoces todo Python: operaciones, variables, bucles, listas, funciones, POO, archivos, excepciones, decoradores, APIs. 6) Puedes crear ejercicios de practica con enunciados. 7) Responde en español, breve y claro. 8) Si no es sobre programacion, redirige amablemente al tema.',
+      messages:agConvHistory
+    })
+  }).then(function(r){return r.json();}).then(function(data){
+    typingEl.remove();
+    var reply='';
+    if(data.content&&data.content[0]){reply=data.content[0].text;}
+    else if(data.error){reply='Error: '+data.error.message;}
+    else{reply=bestMatch||'Intenta preguntar sobre Python: operaciones, bucles, listas, funciones o describe tu ejercicio.';}
+    agConvHistory.push({role:'assistant',content:reply});
+    if(agConvHistory.length>20)agConvHistory=agConvHistory.slice(-14);
+    addAgentMsg('bot',reply);
+  }).catch(function(err){
+    typingEl.remove();
+    var fallback=bestMatch||'No pude conectar con mi cerebro IA, pero puedo ayudarte con lo basico. Pregunta sobre: operaciones, bucles, listas, funciones, POO, tipos de datos.';
+    addAgentMsg('bot',fallback);
+  });
+}
+document.getElementById('ag-send').addEventListener('click',handleAgentSend);
+document.getElementById('ag-inp').addEventListener('keypress',function(e){
+  if(e.key==='Enter')handleAgentSend();
+});
+
+})();
+
+</script>
+</body>
+</html>
